@@ -1,0 +1,396 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────
+   PATHFINDER NEPAL  –  Brand Token System
+   Navy | Gold | Blue  (from logo)
+───────────────────────────────────────────── */
+html {
+    scroll-behavior: smooth;
+}
+
+:root {
+    --background: #ffffff;
+    --foreground: #1B2B4B;
+    --navy: #1B2B4B;
+    --navy-deep: #111E33;
+    --navy-mid: #243959;
+    --gold: #D4A017;
+    --gold-light: #F0C040;
+    --gold-pale: #FBF0C8;
+    --blue-brand: #1E4CB8;
+    --blue-light: #2563EB;
+    --silver: #9AAABB;
+    --snow: #E8F0F7;
+
+    /* Legacy tokens */
+    --primary: #D4A017;
+    --secondary: #1B2B4B;
+    --accent: #F0C040;
+    --muted: #E8F0F7;
+    --nepal-warm: #FBF0C8;
+    --nepal-gold: #D4A017;
+    --nepal-orange: #D4860A;
+}
+
+body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── GPU Compositing: Prevent Framer Motion flicker ── */
+/* Pre-promote animated elements to their own compositor layer */
+[data-framer-component-type],
+[style*="--framer"],
+.motion-safe\:animate,
+[class*="motion"] {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Ensure whileInView elements don't flash on hydration */
+@media (prefers-reduced-motion: no-preference) {
+    [data-projection-id] {
+        will-change: transform, opacity;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+}
+
+/* ── Scrollbar (matches brand) ── */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--snow);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--navy-mid);
+    border-radius: 3px;
+}
+
+@layer components {
+    .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(27, 43, 75, 0.08);
+    }
+
+    /* ── Gold CTA button ── */
+    .btn-primary {
+        @apply bg-nepal-blue text-white px-8 py-3 rounded font-semibold hover:bg-nepal-blue-light transition-colors shadow-sm active:scale-95 disabled:bg-slate-300 disabled:shadow-none;
+    }
+
+    /* ── Navy outline button ── */
+    .btn-secondary {
+        @apply bg-white text-nepal-navy border border-nepal-navy px-8 py-3 rounded font-semibold hover:bg-nepal-snow transition-colors shadow-sm active:scale-95;
+    }
+
+    /* ── Gold accent badge ── */
+    .badge-gold {
+        @apply inline-flex items-center gap-1.5 bg-nepal-gold/10 border border-nepal-gold/30 text-nepal-gold px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest;
+    }
+
+    /* ── Section label (overline) ── */
+    .section-label {
+        @apply text-xs font-bold uppercase tracking-widest text-nepal-gold mb-2;
+    }
+
+    /* ── Card with navy left accent ── */
+    .brand-card {
+        @apply bg-white border border-slate-200 rounded-lg p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 border-l-4 border-l-nepal-gold;
+    }
+}
+
+@layer utilities {
+
+    /* Gold gradient text */
+    .text-gradient-gold {
+        @apply bg-clip-text text-transparent;
+        background-image: linear-gradient(135deg, #F0C040 0%, #D4A017 50%, #B8860B 100%);
+    }
+
+    /* Navy gradient text */
+    .text-gradient-navy {
+        @apply bg-clip-text text-transparent;
+        background-image: linear-gradient(135deg, #1B2B4B 0%, #1E4CB8 100%);
+    }
+
+    /* Section separator */
+    .section-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #D4A017, transparent);
+        width: 100%;
+        margin: 2rem 0;
+    }
+
+    .card-hover {
+        @apply transition-all duration-300 hover:shadow-md hover:-translate-y-1;
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    /* ─── Travel / Flight Path animations ─── */
+    .animate-float-slow {
+        animation: floatSlow 8s ease-in-out infinite;
+    }
+
+    .animate-fly {
+        animation: flyAcross 18s linear infinite;
+    }
+
+    .animate-fly-reverse {
+        animation: flyReverse 22s linear infinite;
+    }
+
+    .animate-dash {
+        animation: dashMove 2.4s linear infinite;
+    }
+
+    .animate-pin-pulse {
+        animation: pinPulse 2.5s ease-in-out infinite;
+    }
+
+    .animate-stamp {
+        animation: stampRotate 4s ease-in-out infinite;
+    }
+
+    @keyframes floatSlow {
+
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        33% {
+            transform: translateY(-12px) rotate(1deg);
+        }
+
+        66% {
+            transform: translateY(-6px) rotate(-1deg);
+        }
+    }
+
+    @keyframes flyAcross {
+        0% {
+            transform: translateX(-200px) translateY(0px);
+            opacity: 0;
+        }
+
+        4% {
+            opacity: 1;
+        }
+
+        50% {
+            transform: translateX(calc(50vw)) translateY(-18px);
+        }
+
+        96% {
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateX(calc(100vw + 200px)) translateY(-8px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes flyReverse {
+        0% {
+            transform: translateX(calc(100vw + 120px)) translateY(0px) scaleX(-1);
+            opacity: 0;
+        }
+
+        5% {
+            opacity: 1;
+        }
+
+        95% {
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateX(-120px) translateY(-40px) scaleX(-1);
+            opacity: 0;
+        }
+    }
+
+    /* ─── Arrival / Landing Animations (Converge on Kathmandu at 34% 26%) ─── */
+    @keyframes landFromLeft {
+        0% {
+            left: -10%;
+            top: 50%;
+            transform: rotate(15deg) scale(1.1);
+            opacity: 0;
+        }
+
+        10% {
+            opacity: 1;
+        }
+
+        80% {
+            opacity: 1;
+        }
+
+        100% {
+            left: 34%;
+            top: 26%;
+            transform: rotate(-5deg) scale(0.3);
+            opacity: 0;
+        }
+    }
+
+    @keyframes landFromRight {
+        0% {
+            left: 110%;
+            top: 65%;
+            transform: scaleX(-1) rotate(10deg) scale(0.9);
+            opacity: 0;
+        }
+
+        10% {
+            opacity: 1;
+        }
+
+        80% {
+            opacity: 1;
+        }
+
+        100% {
+            left: 34%;
+            top: 26%;
+            transform: scaleX(-1) rotate(-10deg) scale(0.3);
+            opacity: 0;
+        }
+    }
+
+    @keyframes landFromTop {
+        0% {
+            left: 80%;
+            top: -10%;
+            transform: scaleX(-1) rotate(45deg) scale(0.8);
+            opacity: 0;
+        }
+
+        10% {
+            opacity: 1;
+        }
+
+        80% {
+            opacity: 1;
+        }
+
+        100% {
+            left: 34%;
+            top: 26%;
+            transform: scaleX(-1) rotate(25deg) scale(0.3);
+            opacity: 0;
+        }
+    }
+
+
+
+    @keyframes pinPulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 0.6;
+        }
+
+        50% {
+            transform: scale(1.4);
+            opacity: 1;
+        }
+    }
+
+    @keyframes stampRotate {
+
+        0%,
+        100% {
+            opacity: 0.06;
+        }
+
+        50% {
+            opacity: 0.09;
+        }
+    }
+
+    @keyframes sideGlideHorizontal {
+        0% {
+            transform: translate(-50%, 0);
+            opacity: 0;
+        }
+
+        20% {
+            opacity: 0.85;
+        }
+
+        80% {
+            opacity: 0.85;
+        }
+
+        100% {
+            transform: translate(50%, 0);
+            opacity: 0;
+        }
+    }
+
+    @keyframes sideGlideHorizontalReverse {
+        0% {
+            transform: translate(50%, 0);
+            opacity: 0;
+        }
+
+        20% {
+            opacity: 0.85;
+        }
+
+        80% {
+            opacity: 0.85;
+        }
+
+        100% {
+            transform: translate(-50%, 0);
+            opacity: 0;
+        }
+    }
+
+    @keyframes dashMove {
+        to {
+            stroke-dashoffset: -40;
+        }
+    }
+}
+
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Outfit', sans-serif;
+}
