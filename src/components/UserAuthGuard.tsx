@@ -7,6 +7,7 @@ import {
     ShieldCheck, Globe, KeyRound, AlertCircle, Loader2, User, Eye, EyeOff, ArrowLeft, ArrowRight
 } from 'lucide-react';
 import Image from 'next/image';
+import { useSession, signIn } from 'next-auth/react';
 
 interface UserAuthGuardProps {
     children: React.ReactNode;
@@ -16,6 +17,7 @@ const USER_SESSION_KEY = 'pf_user_session';
 const USERS_DB_KEY = 'pf_registered_users';
 
 export const UserAuthGuard = ({ children }: UserAuthGuardProps) => {
+    const { data: session, status } = useSession();
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [authMode, setAuthMode] = useState<'selection' | 'manual' | 'google'>('selection');
@@ -34,14 +36,26 @@ export const UserAuthGuard = ({ children }: UserAuthGuardProps) => {
 
     useEffect(() => {
         const checkAuth = () => {
-            const session = localStorage.getItem(USER_SESSION_KEY);
-            if (session) {
-                setUser(JSON.parse(session));
+            const localSession = localStorage.getItem(USER_SESSION_KEY);
+            if (session?.user) {
+                const sessionUser = {
+                    name: session.user.name,
+                    email: session.user.email,
+                    avatar: session.user.image,
+                    authMethod: 'google'
+                };
+                setUser(sessionUser);
+                // Sync session to local storage for backward compatibility
+                localStorage.setItem(USER_SESSION_KEY, JSON.stringify(sessionUser));
+            } else if (localSession) {
+                setUser(JSON.parse(localSession));
             }
-            setLoading(false);
+            if (status !== "loading") {
+                setLoading(false);
+            }
         };
         checkAuth();
-    }, []);
+    }, [session, status]);
 
     const handleManualAction = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -110,17 +124,7 @@ export const UserAuthGuard = ({ children }: UserAuthGuardProps) => {
 
     const handleGoogleLogin = async () => {
         setAuthMode('google');
-        await new Promise(r => setTimeout(r, 2500));
-
-        const userData = {
-            name: 'John Traveler',
-            email: 'john.traveler@gmail.com',
-            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            authMethod: 'google'
-        };
-        localStorage.setItem(USER_SESSION_KEY, JSON.stringify(userData));
-        window.dispatchEvent(new Event('auth-change'));
-        setUser(userData);
+        await signIn('google', { callbackUrl: '/' });
     };
 
     if (loading) {

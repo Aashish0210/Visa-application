@@ -5,8 +5,10 @@ import Link from 'next/link';
 import { ChevronDown, Globe, Activity, LogOut, User, LayoutDashboard, Settings, UserCircle, Bell } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 
 const Navbar = () => {
+    const { data: session, status } = useSession();
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [user, setUser] = useState<any>(null);
@@ -29,9 +31,17 @@ const Navbar = () => {
         window.addEventListener('scroll', handleScroll);
 
         const checkAuth = async () => {
-            const session = localStorage.getItem('pf_user_session');
-            if (session) {
-                const userData = JSON.parse(session);
+            const localSession = localStorage.getItem('pf_user_session');
+            if (session?.user) {
+                const sessionUser = {
+                    name: session.user.name,
+                    email: session.user.email,
+                    avatar: session.user.image,
+                };
+                setUser(sessionUser);
+                checkNotifications(sessionUser.email || '');
+            } else if (localSession) {
+                const userData = JSON.parse(localSession);
                 setUser(userData);
                 checkNotifications(userData.email);
             } else {
@@ -70,10 +80,10 @@ const Navbar = () => {
         };
     }, []);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         localStorage.removeItem('pf_user_session');
         setUser(null);
-        window.location.reload(); // Refresh to clear state in guards
+        await signOut({ callbackUrl: '/' });
     };
 
     const navLinks = [
