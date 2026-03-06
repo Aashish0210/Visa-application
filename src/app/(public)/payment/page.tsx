@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     CreditCard, ShieldCheck, ArrowRight, Loader2,
@@ -11,7 +11,7 @@ import { UserAuthGuard } from '@/components/UserAuthGuard';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const PaymentPage = () => {
+const PaymentContent = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const refId = searchParams.get('ref');
@@ -345,6 +345,18 @@ const PaymentPage = () => {
                 </div>
             </main>
         </UserAuthGuard>
+    );
+};
+
+const PaymentPage = () => {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-[#FDFEFE] flex items-center justify-center">
+                <Loader2 className="w-12 h-12 text-nepal-gold animate-spin mx-auto" />
+            </div>
+        }>
+            <PaymentContent />
+        </Suspense>
     );
 };
 
