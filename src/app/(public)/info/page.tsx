@@ -26,9 +26,9 @@ const InfoPage = () => {
             details: [
                 { label: "Duration", value: "Standard / Renewable" },
                 { label: "Fee", value: "$100 – $150 / mo" },
-                { label: "Pipeline", value: "10-15 Days" }
+                { label: "Time", value: "10-15 Days" }
             ],
-            load: "Standard"
+            load: "Normal"
         },
         {
             title: "Study Visa",
@@ -39,20 +39,20 @@ const InfoPage = () => {
             details: [
                 { label: "Duration", value: "Defined Course" },
                 { label: "Fee", value: "$30 – $75 / mo" },
-                { label: "Pipeline", value: "7-10 Days" }
+                { label: "Time", value: "7-10 Days" }
             ],
-            load: "Light"
+            load: "Quick"
         },
         {
             title: "Residential Visa",
             subtitle: "Long-term Stay",
             icon: ShieldCheck,
             accent: "bg-emerald-600",
-            description: "For investors, retirees, and long-term residents. Ideal for those seeking deep community integration and high-level investments.",
+            description: "For investors, retirees, and long-term residents. Ideal for those seeking to stay long term and make high-level investments.",
             details: [
                 { label: "Duration", value: "5 Years Multi" },
                 { label: "Fee", value: "$500 – $1000 / yr" },
-                { label: "Pipeline", value: "20-30 Days" }
+                { label: "Time", value: "20-30 Days" }
             ],
             load: "Premium"
         },
@@ -65,9 +65,9 @@ const InfoPage = () => {
             details: [
                 { label: "Duration", value: "Up to 150 Days" },
                 { label: "Fee", value: "$30 – $100 (Arrival)" },
-                { label: "Pipeline", value: "1-5 Days" }
+                { label: "Time", value: "1-5 Days" }
             ],
-            load: "Optimized"
+            load: "Fast"
         }
     ];
 
@@ -91,17 +91,31 @@ const InfoPage = () => {
     return (
         <main className="min-h-screen bg-white overflow-hidden font-outfit">
             {/* ── Cinematic Hero Architecture ── */}
-            <section className="relative pt-40 pb-24 bg-nepal-navy overflow-hidden">
-                <div className="absolute inset-0 opacity-20 scale-105">
+            <section className="relative pt-24 lg:pt-40 pb-16 lg:pb-24 bg-nepal-navy overflow-hidden">
+                <motion.div
+                    initial={{ scale: 1, x: 0, y: 0 }}
+                    animate={{
+                        scale: [1, 1.1, 1],
+                        x: [0, -20, 0],
+                        y: [0, -10, 0]
+                    }}
+                    transition={{
+                        duration: 30,
+                        repeat: Infinity,
+                        repeatType: "mirror",
+                        ease: "linear"
+                    }}
+                    className="absolute inset-0 opacity-25"
+                >
                     <Image
-                        src="/images/mount_everest.png"
+                        src="/images/adventure.png"
                         alt=""
                         fill
                         className="object-cover"
                         priority
                     />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-b from-nepal-navy/80 via-nepal-navy to-white" />
+                </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-b from-nepal-navy/85 via-nepal-navy to-nepal-navy" />
 
                 {/* Flight path decoration */}
                 <div className="absolute inset-0 pointer-events-none z-[1]">
@@ -119,64 +133,74 @@ const InfoPage = () => {
                         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                         className="max-w-4xl"
                     >
-                        <div className="flex items-center gap-4 mb-6">
-                            <span className="w-12 h-[2px] bg-nepal-gold" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nepal-gold">Official Guidelines</span>
+                        <div className="flex items-center gap-4 mb-4">
+                            <span className="w-10 h-[2px] bg-nepal-gold" />
+                            <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.5em] text-nepal-gold">Helpful Tips</span>
                         </div>
-                        <h1 className="text-4xl lg:text-7xl font-black text-white mb-8 tracking-tighter leading-[0.85]">
-                            Visa <span className="text-nepal-gold italic">Information</span>
+                        <h1 className="text-3xl lg:text-6xl font-black text-white mb-6 tracking-tighter leading-[0.9]">
+                            Visa <span className="text-nepal-gold italic">Info</span>
                         </h1>
-                        <p className="text-slate-300 text-lg lg:text-xl font-medium max-w-2xl leading-relaxed">
-                            Navigate our premium visa classifications designed for global citizens,
-                            investors, and explorers seeking high-tier integration in the Himalayas.
+                        <p className="text-slate-300 text-lg lg:text-xl font-medium max-w-2xl leading-relaxed opacity-80">
+                            Find the right visa for your needs. We help professionals,
+                            investors, and students join the Nepal community.
                         </p>
                     </motion.div>
                 </div>
             </section>
 
             {/* ── Visa Classification Grid ── */}
-            <section className="py-24 bg-white relative z-[5]">
+            <section className="py-12 lg:py-24 bg-white relative z-[5] -mt-2">
                 <div className="container mx-auto px-6">
                     <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, margin: "-100px" }}
-                        className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto"
+                        className="grid md:grid-cols-2 gap-10 max-w-7xl mx-auto"
                     >
                         {visaTypes.map((visa) => (
                             <motion.div
                                 key={visa.title}
                                 variants={itemVariants}
-                                className="group relative bg-white border border-slate-200 rounded-[2.5rem] p-4 lg:p-10 flex flex-col lg:flex-row gap-10 hover:border-nepal-gold/50 hover:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] transition-all duration-700 overflow-hidden"
+                                className="group relative bg-white border border-slate-200 rounded-[2.5rem] lg:rounded-[3rem] p-6 lg:p-12 flex flex-col hover:border-nepal-gold/50 hover:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] transition-all duration-700 overflow-hidden"
                             >
-                                <div className="flex flex-col items-start shrink-0">
-                                    <div className={`w-20 h-20 ${visa.accent} bg-opacity-10 rounded-3xl flex items-center justify-center text-nepal-navy group-hover:bg-opacity-100 group-hover:text-white transition-all duration-700 shadow-xl shadow-transparent group-hover:shadow-current/10 mb-6`}>
+                                {/* Decorative Gradient Glow */}
+                                <div className="absolute -top-24 -right-24 w-64 h-64 bg-nepal-gold/5 rounded-full blur-[100px] group-hover:bg-nepal-gold/10 transition-all duration-1000" />
+
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 relative z-10">
+                                    <div className="flex flex-col">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <span className="w-8 h-[1.5px] bg-nepal-gold opacity-50" />
+                                            <span className="text-[11px] font-black text-nepal-gold uppercase tracking-[0.4em]">{visa.subtitle}</span>
+                                        </div>
+                                        <h2 className="text-3xl lg:text-5xl font-black text-nepal-navy tracking-tighter leading-none group-hover:text-nepal-gold transition-colors duration-500">
+                                            {visa.title}
+                                        </h2>
+                                    </div>
+                                    <div className={`w-20 h-20 ${visa.accent} bg-opacity-10 rounded-3xl flex items-center justify-center text-nepal-navy group-hover:bg-opacity-100 group-hover:text-white transition-all duration-700 shadow-xl shadow-transparent group-hover:shadow-current/10 shrink-0`}>
                                         <visa.icon size={32} strokeWidth={1.5} />
                                     </div>
-                                    <span className="text-[9px] font-black text-nepal-gold uppercase tracking-[0.3em] mb-2">{visa.subtitle}</span>
-                                    <h2 className="text-3xl font-black text-nepal-navy tracking-tighter mb-4">{visa.title}</h2>
                                 </div>
 
-                                <div className="flex flex-col justify-between flex-1">
-                                    <p className="text-slate-500 text-sm leading-relaxed font-medium mb-8">
+                                <div className="flex flex-col flex-1 relative z-10">
+                                    <p className="text-slate-500 text-lg leading-relaxed font-medium mb-10 max-w-2xl">
                                         {visa.description}
                                     </p>
 
-                                    <div className="grid grid-cols-1 gap-2 mb-10">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
                                         {visa.details.map((detail) => (
-                                            <div key={detail.label} className="bg-slate-50 border border-slate-100/50 p-4 rounded-2xl flex items-center justify-between group-hover:bg-white group-hover:border-slate-200 transition-all">
-                                                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{detail.label}</span>
-                                                <span className="text-sm font-black text-nepal-navy tracking-tight">{detail.value}</span>
+                                            <div key={detail.label} className="bg-slate-50/50 border border-slate-100 p-5 rounded-2xl flex flex-col gap-1 group-hover:bg-white group-hover:border-nepal-gold/20 transition-all duration-500">
+                                                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{detail.label}</span>
+                                                <span className="text-base font-black text-nepal-navy tracking-tight">{detail.value}</span>
                                             </div>
                                         ))}
                                     </div>
 
                                     <Link
                                         href="/apply"
-                                        className="inline-flex items-center justify-center gap-3 bg-nepal-navy text-white py-5 px-8 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-nepal-gold hover:text-nepal-navy hover:scale-[1.02] active:scale-95 transition-all duration-500 shadow-xl group-hover:shadow-nepal-gold/20"
+                                        className="inline-flex items-center justify-center gap-3 bg-nepal-navy text-white py-6 px-10 rounded-2xl font-black text-xs uppercase tracking-[0.3em] hover:bg-nepal-gold hover:text-nepal-navy hover:scale-[1.02] active:scale-95 transition-all duration-500 shadow-xl group-hover:shadow-nepal-gold/20 mt-auto"
                                     >
-                                        Start Application <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                        Start Your Application <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                                     </Link>
                                 </div>
                             </motion.div>
@@ -193,7 +217,7 @@ const InfoPage = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.75, ease: [0.25, 0.46, 0.45, 0.94] }}
-                        className="relative bg-nepal-navy rounded-[3.5rem] p-12 lg:p-20 overflow-hidden shadow-[0_80px_120px_-30px_rgba(0,0,0,0.3)]"
+                        className="relative bg-nepal-navy rounded-[2.5rem] lg:rounded-[3.5rem] p-8 lg:p-20 overflow-hidden shadow-[0_80px_120px_-30px_rgba(0,0,0,0.3)] pb-32 lg:pb-20"
                     >
                         {/* High-res BG for protocol panel */}
                         <motion.div
@@ -207,9 +231,9 @@ const InfoPage = () => {
 
                         <div className="relative z-10 grid lg:grid-cols-3 gap-16">
                             {[
-                                { icon: Clock, title: "Renewal Policy", desc: "Most long-term visas are renewable within Nepal at the Department of Immigration in Kathmandu or Pokhara local hubs.", tag: "Timeframe Control" },
-                                { icon: DollarSign, title: "Official Fees", desc: "Secure online payment gateway supporting international credit cards and localized bank protocols via AES-256 encryption.", tag: "Secure Gateway" },
-                                { icon: Zap, title: "Standard Compliance", desc: "Foreign nationals must strictly adhere to the purpose of their visa category as per the Ministry of Home Affairs protocols.", tag: "Global Integrity" }
+                                { icon: Clock, title: "Visa Renewal", desc: "You can renew most long-term visas at our offices in Kathmandu or Pokhara.", tag: "Reliable" },
+                                { icon: DollarSign, title: "Visa Fees", desc: "Pay safely online with your credit card or local bank.", tag: "Safe" },
+                                { icon: Zap, title: "Rules", desc: "You must follow the rules of your visa type while staying in Nepal.", tag: "Fair" }
                             ].map((policy, idx) => (
                                 <div key={idx} className="flex flex-col items-start gap-6 group">
                                     <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-nepal-gold group-hover:bg-nepal-gold group-hover:text-nepal-navy transition-all duration-500">
@@ -224,7 +248,7 @@ const InfoPage = () => {
                                             {policy.desc}
                                         </p>
                                         <div className="pt-4 border-t border-white/10 w-full">
-                                            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 group-hover:text-nepal-gold transition-colors">{policy.tag}</span>
+                                            <span className="text-sm font-black uppercase tracking-[0.3em] text-white/30 group-hover:text-nepal-gold transition-colors">{policy.tag}</span>
                                         </div>
                                     </div>
                                 </div>

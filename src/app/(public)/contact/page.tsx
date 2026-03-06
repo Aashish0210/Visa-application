@@ -54,10 +54,15 @@ const ContactPage = () => {
             <main className="min-h-screen bg-white overflow-hidden font-outfit">
                 {/* ── Cinematic Hero Architecture ── */}
                 <section className="relative pt-40 pb-24 bg-nepal-navy overflow-hidden">
-                    <div className="absolute inset-0 opacity-20 scale-105">
-                        <Image src="/images/mount_everest.png" alt="" fill className="object-cover" priority />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-b from-nepal-navy/80 via-nepal-navy to-white" />
+                    <motion.div
+                        initial={{ scale: 1, y: 0 }}
+                        animate={{ scale: [1, 1.12, 1], y: [0, -15, 0] }}
+                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 opacity-25"
+                    >
+                        <Image src="/images/official_building.png" alt="" fill className="object-cover" priority />
+                    </motion.div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-nepal-navy/85 via-nepal-navy to-nepal-navy" />
                     <div className="absolute inset-0 pointer-events-none z-[1]">
                         <FlightPathSVG paths={[{ d: 'M0 200 Q 720 500 1440 200', color: '#D4A017', dash: '8 6', opacity: 0.1, animate: true }]} />
                     </div>
@@ -68,32 +73,31 @@ const ContactPage = () => {
                             transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
                             className="max-w-4xl"
                         >
-                            <div className="flex items-center gap-4 mb-6">
-                                <span className="w-12 h-[2px] bg-nepal-gold" />
-                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nepal-gold">Official Support Channels</span>
+                            <div className="flex items-center gap-4 mb-4">
+                                <span className="w-10 h-[2px] bg-nepal-gold" />
+                                <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.5em] text-nepal-gold">Get In Touch</span>
                             </div>
-                            <h1 className="text-4xl lg:text-7xl font-black text-white mb-8 tracking-tighter leading-[0.85]">
-                                Contact <span className="text-nepal-gold italic">Concierge</span>
+                            <h1 className="text-4xl lg:text-6xl font-black text-white mb-6 tracking-tighter leading-[0.9]">
+                                Help & <span className="text-nepal-gold italic">Support</span>
                             </h1>
-                            <p className="text-slate-300 text-lg lg:text-xl font-medium max-w-2xl leading-relaxed">
-                                Connect with our specialized immigration advisors for technical support,
-                                protocol inquiries, and high-level visa consultation.
+                            <p className="text-slate-300 text-lg lg:text-xl font-medium max-w-2xl leading-relaxed opacity-80">
+                                Connect with our team for visas, applications, and any other questions you have.
                             </p>
                         </motion.div>
                     </div>
                 </section>
 
                 {/* ── Contact Infrastructure ── */}
-                <section className="py-24 bg-white relative z-10 -mt-10">
+                <section className="py-24 bg-white relative z-10 -mt-2">
                     <div className="container mx-auto px-6 max-w-7xl">
                         <div className="grid lg:grid-cols-12 gap-12 items-start">
 
                             {/* Side Pillars */}
                             <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-36">
                                 {[
-                                    { icon: Mail, title: "Electronic Registry", detail: "support@immigration.gov.np", sub: "Priority Queue for Verified IDs", accent: "text-rose-500" },
-                                    { icon: Phone, title: "Direct Intelligence", detail: "+977-1-4429660", sub: "Sun-Fri / 10 AM - 5 PM (NPT)", accent: "text-nepal-blue" },
-                                    { icon: MapPin, title: "HQ Command", detail: "Kalikasthan, Kathmandu", sub: "Department of Immigration, Nepal", accent: "text-emerald-500" }
+                                    { icon: Mail, title: "Email Us", detail: "support@immigration.gov.np", sub: "For all your questions", accent: "text-rose-500" },
+                                    { icon: Phone, title: "Call Us", detail: "+977-1-4429660", sub: "Sun-Fri / 10 AM - 5 PM (NPT)", accent: "text-nepal-blue" },
+                                    { icon: MapPin, title: "Our Office", detail: "Kalikasthan, Kathmandu", sub: "Department of Immigration, Nepal", accent: "text-emerald-500" }
                                 ].map((pill, i) => (
                                     <motion.div
                                         key={i}
@@ -105,9 +109,9 @@ const ContactPage = () => {
                                         <div className={`w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center ${pill.accent} mb-6 border border-slate-100 group-hover:bg-nepal-gold group-hover:text-nepal-navy group-hover:rotate-6 transition-all duration-500`}>
                                             <pill.icon size={26} strokeWidth={1.5} />
                                         </div>
-                                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">{pill.title}</h3>
-                                        <p className="text-xl font-black text-nepal-navy tracking-tight mb-2">{pill.detail}</p>
-                                        <p className="text-[11px] font-bold text-slate-300 uppercase tracking-widest">{pill.sub}</p>
+                                        <h3 className="text-sm font-black uppercase tracking-[0.3em] text-slate-400 mb-2">{pill.title}</h3>
+                                        <p className="text-2xl font-black text-nepal-navy tracking-tight mb-2">{pill.detail}</p>
+                                        <p className="text-sm font-bold text-slate-300 uppercase tracking-widest">{pill.sub}</p>
                                     </motion.div>
                                 ))}
 
@@ -118,13 +122,13 @@ const ContactPage = () => {
                                     <div className="relative z-10 space-y-6">
                                         <h4 className="text-2xl font-black tracking-tight italic text-nepal-gold">Official Hours</h4>
                                         <div className="space-y-3">
-                                            <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest">
+                                            <div className="flex justify-between items-center text-sm font-bold uppercase tracking-widest">
                                                 <span className="text-white/40">Mon - Fri</span>
                                                 <span>09:00 - 17:00</span>
                                             </div>
-                                            <div className="border-t border-white/10 pt-3 flex justify-between items-center text-xs font-bold uppercase tracking-widest">
+                                            <div className="border-t border-white/10 pt-3 flex justify-between items-center text-sm font-bold uppercase tracking-widest">
                                                 <span className="text-white/40">Saturday</span>
-                                                <span className="text-rose-400">Restricted Access</span>
+                                                <span className="text-rose-400">Closed</span>
                                             </div>
                                         </div>
                                     </div>
@@ -141,8 +145,8 @@ const ContactPage = () => {
                                 >
                                     <div className="flex items-center gap-3 mb-12">
                                         <Zap className="text-nepal-gold" size={24} />
-                                        <h2 className="text-3xl font-black text-nepal-navy tracking-tighter uppercase italic">
-                                            Secure <span className="text-nepal-gold">Transmission</span>
+                                        <h2 className="text-5xl font-black text-nepal-navy tracking-tighter uppercase italic">
+                                            Send <span className="text-nepal-gold">Message</span>
                                         </h2>
                                     </div>
 
@@ -162,23 +166,23 @@ const ContactPage = () => {
                                                 </div>
                                                 <div>
                                                     <h3 className="text-3xl font-black text-nepal-navy tracking-tighter mb-3">
-                                                        Transmission <span className="text-emerald-500">Received</span>
+                                                        Message <span className="text-emerald-500">Sent</span>
                                                     </h3>
-                                                    <p className="text-slate-500 font-medium max-w-md mx-auto leading-relaxed">
-                                                        Your query has been securely archived in our system. Our team will respond within 1-2 business days.
+                                                    <p className="text-slate-500 font-medium max-w-md mx-auto leading-relaxed text-xl">
+                                                        Your message has been saved in our system. Our team will respond within 1-2 business days.
                                                     </p>
                                                 </div>
                                                 {refId && (
                                                     <div className="inline-flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4">
-                                                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Reference ID</span>
-                                                        <span className="font-black text-nepal-gold font-mono tracking-widest">{refId}</span>
+                                                        <span className="text-sm font-black uppercase tracking-[0.3em] text-slate-400">Message ID</span>
+                                                        <span className="font-black text-nepal-gold font-mono tracking-widest text-lg">{refId}</span>
                                                     </div>
                                                 )}
                                                 <button
                                                     onClick={() => setStatus('idle')}
-                                                    className="text-[11px] font-black uppercase tracking-widest text-nepal-navy hover:text-nepal-gold transition-colors"
+                                                    className="text-sm font-black uppercase tracking-widest text-nepal-navy hover:text-nepal-gold transition-colors"
                                                 >
-                                                    Submit Another Query
+                                                    Send Another Message
                                                 </button>
                                             </motion.div>
                                         ) : (
@@ -195,19 +199,19 @@ const ContactPage = () => {
                                                     <div className="space-y-4">
                                                         <div className="flex items-center gap-3 ml-2">
                                                             <User className="text-nepal-gold" size={14} strokeWidth={2.5} />
-                                                            <label className="text-[11px] font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Full Name</label>
+                                                            <label className="text-sm font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Full Name</label>
                                                         </div>
                                                         <div className="relative group/field transition-all duration-500">
                                                             <div className="absolute -inset-[1px] bg-gradient-to-r from-nepal-gold/50 to-transparent rounded-[2rem] opacity-0 group-focus-within/field:opacity-100 transition-opacity blur-[2px]" />
-                                                            <div className="relative flex items-center bg-slate-50 border border-slate-200 rounded-[2rem] group-focus-within/field:bg-white group-focus-within/field:border-nepal-gold/50 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-md">
+                                                            <div className="relative flex items-center bg-white border border-slate-300 rounded-[2rem] group-focus-within/field:border-nepal-gold group-focus-within/field:shadow-2xl group-focus-within/field:shadow-nepal-gold/15 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-md">
                                                                 <input
                                                                     name="name"
                                                                     type="text"
                                                                     required
                                                                     value={form.name}
                                                                     onChange={handleChange}
-                                                                    placeholder="ENTER FULL NAME"
-                                                                    className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black placeholder:text-slate-300 placeholder:font-black outline-none text-base"
+                                                                    placeholder="YOUR NAME"
+                                                                    className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black placeholder:text-slate-400 placeholder:font-black outline-none text-xl"
                                                                 />
                                                             </div>
                                                         </div>
@@ -217,19 +221,19 @@ const ContactPage = () => {
                                                     <div className="space-y-4">
                                                         <div className="flex items-center gap-3 ml-2">
                                                             <Mail className="text-nepal-gold" size={14} strokeWidth={2.5} />
-                                                            <label className="text-[11px] font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Email Access</label>
+                                                            <label className="text-sm font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Email</label>
                                                         </div>
                                                         <div className="relative group/field transition-all duration-500">
                                                             <div className="absolute -inset-[1px] bg-gradient-to-r from-nepal-gold/50 to-transparent rounded-[2rem] opacity-0 group-focus-within/field:opacity-100 transition-opacity blur-[2px]" />
-                                                            <div className="relative flex items-center bg-slate-50 border border-slate-200 rounded-[2rem] group-focus-within/field:bg-white group-focus-within/field:border-nepal-gold/50 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-md">
+                                                            <div className="relative flex items-center bg-white border border-slate-300 rounded-[2rem] group-focus-within/field:border-nepal-gold group-focus-within/field:shadow-2xl group-focus-within/field:shadow-nepal-gold/15 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-md">
                                                                 <input
                                                                     name="email"
                                                                     type="email"
                                                                     required
                                                                     value={form.email}
                                                                     onChange={handleChange}
-                                                                    placeholder="CITIZEN@PROTOCOL.COM"
-                                                                    className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black placeholder:text-slate-300 placeholder:font-black outline-none text-base"
+                                                                    placeholder="YOUR EMAIL"
+                                                                    className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black placeholder:text-slate-400 placeholder:font-black outline-none text-xl"
                                                                 />
                                                             </div>
                                                         </div>
@@ -240,21 +244,21 @@ const ContactPage = () => {
                                                 <div className="space-y-4">
                                                     <div className="flex items-center gap-3 ml-2">
                                                         <Layers className="text-nepal-gold" size={14} strokeWidth={2.5} />
-                                                        <label className="text-[11px] font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Department Query</label>
+                                                        <label className="text-sm font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Department</label>
                                                     </div>
                                                     <div className="relative group/field transition-all duration-500">
                                                         <div className="absolute -inset-[1px] bg-gradient-to-r from-nepal-gold/50 to-transparent rounded-[2rem] opacity-0 group-focus-within/field:opacity-100 transition-opacity blur-[2px]" />
-                                                        <div className="relative flex items-center bg-slate-50 border border-slate-200 rounded-[2rem] group-focus-within/field:bg-white group-focus-within/field:border-nepal-gold/50 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-md">
+                                                        <div className="relative flex items-center bg-white border border-slate-300 rounded-[2rem] group-focus-within/field:border-nepal-gold group-focus-within/field:shadow-2xl group-focus-within/field:shadow-nepal-gold/15 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-md">
                                                             <select
                                                                 name="department"
                                                                 value={form.department}
                                                                 onChange={handleChange}
-                                                                className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black outline-none appearance-none cursor-pointer"
+                                                                className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black outline-none appearance-none cursor-pointer text-xl"
                                                             >
-                                                                <option>Consular Visa Inquiry</option>
-                                                                <option>Technical Handshake Error</option>
-                                                                <option>Payment Ledger Update</option>
-                                                                <option>Long-Term Status Briefing</option>
+                                                                <option>General Questions</option>
+                                                                <option>Website Problems</option>
+                                                                <option>Payment Issues</option>
+                                                                <option>Visa Status</option>
                                                             </select>
                                                             <div className="absolute right-8 pointer-events-none text-slate-400">
                                                                 <Zap size={14} className="group-focus-within/field:text-nepal-gold transition-colors" />
@@ -267,19 +271,19 @@ const ContactPage = () => {
                                                 <div className="space-y-4">
                                                     <div className="flex items-center gap-3 ml-2">
                                                         <MessageSquare className="text-nepal-gold" size={14} strokeWidth={2.5} />
-                                                        <label className="text-[11px] font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Message Payload</label>
+                                                        <label className="text-sm font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Your Message</label>
                                                     </div>
                                                     <div className="relative group/field transition-all duration-500">
                                                         <div className="absolute -inset-[1px] bg-gradient-to-r from-nepal-gold/50 to-transparent rounded-[2rem] opacity-0 group-focus-within/field:opacity-100 transition-opacity blur-[2px]" />
-                                                        <div className="relative bg-slate-50 border border-slate-200 rounded-[2rem] group-focus-within/field:bg-white group-focus-within/field:border-nepal-gold/50 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-md">
+                                                        <div className="relative bg-white border border-slate-300 rounded-[2rem] group-focus-within/field:border-nepal-gold group-focus-within/field:shadow-2xl group-focus-within/field:shadow-nepal-gold/15 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-md">
                                                             <textarea
                                                                 name="message"
                                                                 rows={5}
                                                                 required
                                                                 value={form.message}
                                                                 onChange={handleChange}
-                                                                placeholder="DETAILED INQUIRY PAYLOAD..."
-                                                                className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black placeholder:text-slate-300 placeholder:font-black outline-none text-base resize-none"
+                                                                placeholder="Describe your question here..."
+                                                                className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black placeholder:text-slate-400 placeholder:font-black outline-none text-xl resize-none"
                                                             />
                                                         </div>
                                                     </div>
@@ -314,11 +318,11 @@ const ContactPage = () => {
                                                     {/* Border Glow */}
                                                     <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-nepal-gold/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                                    <span className="relative z-10 flex items-center justify-center gap-4 text-white font-black text-sm uppercase tracking-[0.4em]">
+                                                    <span className="relative z-10 flex items-center justify-center gap-4 text-white font-black text-base uppercase tracking-[0.4em]">
                                                         {status === 'sending' ? (
                                                             <>
                                                                 <Loader2 className="animate-spin text-nepal-gold" size={20} />
-                                                                <span className="animate-pulse">Transmitting Payload...</span>
+                                                                <span className="animate-pulse">Sending...</span>
                                                             </>
                                                         ) : (
                                                             <>
@@ -326,7 +330,7 @@ const ContactPage = () => {
                                                                     <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500 text-nepal-gold" />
                                                                     <div className="absolute -inset-2 bg-nepal-gold/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                                                                 </div>
-                                                                Release Secure Transmission
+                                                                Send Message
                                                             </>
                                                         )}
                                                     </span>
@@ -339,11 +343,11 @@ const ContactPage = () => {
                                     <div className="mt-16 pt-16 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6 opacity-60">
                                         <div className="flex items-center gap-3">
                                             <ShieldCheck className="text-emerald-500" size={18} />
-                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">AES-256 Encrypted Tunnel</p>
+                                            <p className="text-sm font-black text-slate-400 uppercase tracking-widest">Secure Connection</p>
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Support Core: Operational</p>
+                                            <p className="text-sm font-black text-slate-400 uppercase tracking-widest">System: Active</p>
                                         </div>
                                     </div>
                                 </motion.div>

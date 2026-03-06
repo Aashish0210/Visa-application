@@ -14,7 +14,7 @@ const heroSlides = [
         image: '/images/hero_himalayas_4k.jpg',
         headline: 'Nepal Long-Term',
         accent: 'Visa Application',
-        sub: 'Official Immigration Portal',
+        sub: 'Travel to Nepal',
         panX: '-2%',
         panY: '-1%',
     },
@@ -22,7 +22,7 @@ const heroSlides = [
         image: '/images/hero_golden_triangle_4k.jpg',
         headline: 'Gateway to the',
         accent: 'Himalayas',
-        sub: 'Official Immigration Portal',
+        sub: 'Travel to Nepal',
         panX: '2%',
         panY: '-1.5%',
     },
@@ -30,7 +30,7 @@ const heroSlides = [
         image: '/images/hero_boudhanath_4k.webp',
         headline: 'Rich Cultural',
         accent: 'Heritage',
-        sub: 'Official Immigration Portal',
+        sub: 'Travel to Nepal',
         panX: '-1.5%',
         panY: '1%',
     },
@@ -38,7 +38,7 @@ const heroSlides = [
         image: '/images/hero_patan_4k.jpg',
         headline: 'Ancient Land,',
         accent: 'Modern Portal',
-        sub: 'Official Immigration Portal',
+        sub: 'Travel to Nepal',
         panX: '1%',
         panY: '-2%',
     },
@@ -189,19 +189,19 @@ const Hero = () => {
             <div className="absolute inset-0 z-10 bg-gradient-to-r from-slate-950/90 via-slate-950/50 to-transparent" />
             {/* Top vignette */}
             <div className="absolute top-0 inset-x-0 h-44 z-10 bg-gradient-to-b from-slate-950/60 to-transparent" />
-            {/* Bottom fade into white */}
-            <div className="absolute bottom-0 inset-x-0 h-40 z-10 bg-gradient-to-t from-white via-white/20 to-transparent" />
+            {/* Bottom fade into darkness — Merge with next section */}
+            <div className="absolute bottom-0 inset-x-0 h-40 z-10 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
 
             {/* ════════════════════════════════════════
                 MAIN CONTENT
             ════════════════════════════════════════ */}
-            <div className="container mx-auto px-6 relative z-20 pt-28 pb-36">
+            <div className="container mx-auto px-6 relative z-20 pt-20 lg:pt-28 pb-32 lg:pb-36">
 
 
                 {/* CONTENT OVERLAY — text & primary CTAs */}
                 <div className="relative z-[15] h-full pointer-events-none">
                     <div className="container mx-auto px-6 h-full flex flex-col justify-center">
-                        <div className="max-w-4xl space-y-8 pt-20">
+                        <div className="max-w-4xl space-y-12 lg:space-y-12 pt-8 lg:pt-20">
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={current}
@@ -212,39 +212,39 @@ const Hero = () => {
                                     className="space-y-4"
                                 >
 
-                                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-[0.9] tracking-tighter drop-shadow-2xl">
+                                    <h1 className="text-3xl md:text-6xl lg:text-8xl font-black text-white leading-[0.9] tracking-tighter drop-shadow-2xl">
                                         {heroSlides[current].headline}
-                                        <span className="block text-nepal-gold mt-2 uppercase italic text-2xl md:text-4xl lg:text-5xl">{heroSlides[current].accent}</span>
+                                        <span className="block text-nepal-gold mt-2 uppercase italic text-2xl md:text-5xl lg:text-7xl">{heroSlides[current].accent}</span>
                                     </h1>
                                 </motion.div>
                             </AnimatePresence>
 
-                            <div className="flex flex-wrap gap-4 pt-6 pointer-events-auto">
+                            <div className="flex flex-col md:flex-row flex-wrap gap-5 pt-12 md:pt-6 pointer-events-auto">
                                 <Link
                                     href="/apply"
-                                    className="bg-nepal-gold text-nepal-navy px-10 py-5 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_20px_40px_-10px_rgba(212,160,23,0.4)] flex items-center gap-3 active:scale-95 group"
+                                    className="bg-nepal-gold text-nepal-navy px-8 lg:px-10 py-4 lg:py-5 rounded-xl font-black text-sm lg:text-base uppercase tracking-widest hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_20px_40px_-10px_rgba(212,160,23,0.4)] flex items-center justify-center md:justify-start gap-3 active:scale-95 group w-full md:w-auto"
                                 >
-                                    Start Application
+                                    Apply Now
                                     <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform" />
                                 </Link>
                                 <Link
                                     href="/track"
-                                    className="bg-white/10 backdrop-blur-xl border border-white/20 text-white px-10 py-5 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-white/20 transition-all duration-500 flex items-center gap-3 active:scale-95"
+                                    className="bg-white/5 backdrop-blur-2xl border border-white/10 text-white px-8 lg:px-10 py-4 lg:py-5 rounded-xl font-black text-sm lg:text-base uppercase tracking-widest hover:bg-white/20 transition-all duration-500 flex items-center justify-center md:justify-start gap-3 active:scale-95 w-full md:w-auto"
                                 >
                                     Track Status
                                     <Clock size={18} />
                                 </Link>
                             </div>
 
-                            <div className="flex items-center gap-8 pt-12 border-t border-white/10 max-w-lg">
+                            <div className="flex items-center gap-8 pt-12 lg:pt-12 border-t border-white/10 max-w-lg">
                                 <div className="flex flex-col">
-                                    <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest mb-1">Standard Processing</span>
-                                    <span className="text-white text-lg font-black tracking-tight">72 Hours <span className="text-nepal-gold">*</span></span>
+                                    <span className="text-white/40 text-sm font-bold uppercase tracking-widest mb-1">Processing Time</span>
+                                    <span className="text-white text-xl font-black tracking-tight">72 Hours <span className="text-nepal-gold">*</span></span>
                                 </div>
                                 <div className="w-px h-10 bg-white/10" />
                                 <div className="flex flex-col">
-                                    <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest mb-1">Digital Security</span>
-                                    <span className="text-white text-lg font-black tracking-tight">AES-256 Bit</span>
+                                    <span className="text-white/40 text-sm font-bold uppercase tracking-widest mb-1">Safe & Secure</span>
+                                    <span className="text-white text-xl font-black tracking-tight">Official</span>
                                 </div>
                             </div>
                         </div>
@@ -255,7 +255,7 @@ const Hero = () => {
             {/* ════════════════════════════════════════
                 SLIDE INDICATORS  (animated fill bars)
             ════════════════════════════════════════ */}
-            <div className="absolute bottom-10 inset-x-0 z-20 flex items-center justify-center gap-2">
+            <div className="absolute bottom-10 inset-x-0 z-20 hidden md:flex items-center justify-center gap-2">
                 {heroSlides.map((_, i) => (
                     <button
                         key={i}
@@ -281,20 +281,31 @@ const Hero = () => {
             {/* ════════════════════════════════════════
                 ARROW CONTROLS
             ════════════════════════════════════════ */}
+            {/* ── Center Arrows (Desktop & Mobile) ── */}
             <button
-                onClick={() => goToWithReset((current - 1 + heroSlides.length) % heroSlides.length)}
+                onClick={goPrev}
                 aria-label="Previous slide"
-                className="absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/25 hover:scale-110 hover:border-white/40 transition-all duration-200 shadow-lg"
+                className="flex absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 hover:scale-110 hover:border-nepal-gold/50 transition-all duration-500 shadow-2xl group"
             >
-                <ChevronLeft size={20} />
+                <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 group-hover:-translate-x-0.5 transition-transform" />
             </button>
             <button
-                onClick={() => goToWithReset((current + 1) % heroSlides.length)}
+                onClick={goNext}
                 aria-label="Next slide"
-                className="absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/25 hover:scale-110 hover:border-white/40 transition-all duration-200 shadow-lg"
+                className="flex absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-14 md:h-14 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full items-center justify-center text-white hover:bg-white/20 hover:scale-110 hover:border-nepal-gold/50 transition-all duration-500 shadow-2xl group"
             >
-                <ChevronRight size={20} />
+                <ChevronRight className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" />
             </button>
+
+            {/* ── Mobile Bottom Indicators ── */}
+            <div className="absolute bottom-28 inset-x-0 z-20 flex md:hidden items-center justify-center gap-2">
+                {heroSlides.map((_, i) => (
+                    <div
+                        key={i}
+                        className={`h-1.5 rounded-full transition-all duration-500 ${i === current ? 'w-8 bg-nepal-gold shadow-[0_0_15px_rgba(212,160,23,0.5)]' : 'w-2 bg-white/20'}`}
+                    />
+                ))}
+            </div>
 
             {/* ════════════════════════════════════════
                 FLOATING PIPELINE CARD
@@ -302,8 +313,8 @@ const Hero = () => {
             <div className="absolute bottom-24 right-8 z-20 hidden lg:block">
                 <div className="bg-slate-900/85 backdrop-blur-md border border-white/12 rounded-xl p-5 text-white w-64 shadow-2xl">
                     <div className="flex items-center justify-between mb-4">
-                        <span className="text-xs uppercase tracking-widest text-white/50 font-bold">Processing Pipeline</span>
-                        <span className="flex items-center space-x-1.5 text-green-400 text-xs font-semibold">
+                        <span className="text-sm uppercase tracking-widest text-white/50 font-bold">Active Visas</span>
+                        <span className="flex items-center space-x-1.5 text-green-400 text-sm font-semibold">
                             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse inline-block" />
                             <span>Live</span>
                         </span>
@@ -314,7 +325,7 @@ const Hero = () => {
                         { label: 'Residential Visa', pct: 48, color: 'bg-emerald-500' },
                     ].map((item, idx) => (
                         <div key={item.label} className="mb-3">
-                            <div className="flex justify-between text-xs mb-1.5">
+                            <div className="flex justify-between text-sm mb-1.5">
                                 <span className="text-white/65">{item.label}</span>
                                 <span className="font-bold">{item.pct}%</span>
                             </div>
@@ -328,7 +339,7 @@ const Hero = () => {
                             </div>
                         </div>
                     ))}
-                    <p className="text-white/30 text-[10px] mt-4 text-center">Applications in progress today</p>
+                    <p className="text-white/30 text-sm mt-4 text-center">Applications in progress today</p>
                 </div>
             </div>
         </section>

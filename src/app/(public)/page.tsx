@@ -74,19 +74,19 @@ const KathmanduHub = () => (
             </div>
 
             <div className="flex flex-col">
-                <span className="text-white text-[10px] font-black tracking-[0.2em] uppercase leading-none mb-0.5">Kathmandu</span>
+                <span className="text-white text-xs font-black tracking-[0.2em] uppercase leading-none mb-0.5">Kathmandu</span>
                 <div className="flex items-center gap-1.5">
-                    <span className="text-[7px] font-bold text-nepal-gold uppercase tracking-widest whitespace-nowrap">Official Hub</span>
+                    <span className="text-xs font-bold text-nepal-gold uppercase tracking-widest whitespace-nowrap">Official Hub</span>
                     <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span className="text-[7px] font-bold text-white/40 uppercase tracking-widest">TIA Int'l</span>
+                    <span className="text-sm font-black text-white/40 uppercase tracking-widest">TIA Int'l</span>
                 </div>
             </div>
 
             <div className="h-7 w-[1px] bg-white/10 mx-1" />
 
             <div className="flex flex-col items-end opacity-60 group-hover:opacity-100 transition-opacity">
-                <span className="text-[8px] font-mono font-bold text-nepal-gold leading-none mb-1">27.70° N</span>
-                <span className="text-[8px] font-mono font-bold text-white/70 leading-none">85.32° E</span>
+                <span className="text-sm font-mono font-bold text-nepal-gold leading-none mb-1">27.70° N</span>
+                <span className="text-sm font-mono font-bold text-white/70 leading-none">85.32° E</span>
             </div>
         </div>
     </div>
@@ -111,31 +111,6 @@ const PassportStamp = () => (
     </svg>
 );
 
-/* ══════════════════════════════════════════════════════════
-   TRUST BANNER
-   Displays government and security credentials
-══════════════════════════════════════════════════════════ */
-const TrustBanner = () => (
-    <section className="bg-nepal-navy border-b border-white/10 relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(212,160,23,0.05)_0%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-        <div className="container mx-auto px-6 py-6 relative z-10">
-            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-                {[
-                    { icon: Shield, label: 'Dept. of Immigration' },
-                    { icon: Globe, label: 'Ministry of Home Affairs' },
-                    { icon: ShieldCheck, label: 'Interpol Verified' },
-                    { icon: Users, label: 'SAARC Member State' },
-                    { icon: Award, label: 'ISO 27001 Certified' },
-                ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 text-white/50 hover:text-white transition-all transform hover:translate-y-[-1px] cursor-default">
-                        <item.icon size={16} className="text-nepal-gold shrink-0 transition-transform hover:rotate-[15deg]" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap">{item.label}</span>
-                    </div>
-                ))}
-            </div>
-        </div>
-    </section>
-);
 
 /* ══════════════════════════════════════════════════════════
    VISA CATEGORIES
@@ -165,7 +140,7 @@ const visaTypes = [
 ];
 
 const VisaTypes = () => (
-    <section className="py-24 bg-black relative overflow-hidden font-outfit" id="residency">
+    <section className="py-12 lg:py-24 bg-black relative overflow-hidden font-outfit" id="residency">
         {/* Ultimate Cinematic Background - Seamless Integration */}
         <div className="absolute inset-0 pointer-events-none z-[0] flex items-center justify-center overflow-hidden">
             {/* NEW HIGH-RES PLANE BACKGROUND 1 */}
@@ -202,16 +177,16 @@ const VisaTypes = () => (
                         className="flex items-center justify-center lg:justify-start gap-4 mb-4"
                     >
                         <span className="w-10 h-[2px] bg-nepal-gold" />
-                        <span className="text-sm font-black uppercase tracking-[0.3em] text-nepal-gold">Official Pathways</span>
+                        <span className="text-base font-black uppercase tracking-[0.3em] text-nepal-gold">Visa Options</span>
                     </motion.div>
                     <motion.h2
                         initial={{ opacity: 0, y: 22 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.08 }}
-                        className="text-4xl lg:text-6xl font-black text-white tracking-tight leading-tight"
+                        className="text-3xl lg:text-7xl font-black text-white tracking-tight leading-tight"
                     >
-                        Choose Your <span className="text-nepal-gold">Residency</span>
+                        Pick Your <span className="text-nepal-gold">Visa</span>
                     </motion.h2>
                 </div>
                 <motion.p
@@ -221,8 +196,8 @@ const VisaTypes = () => (
                     transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.15 }}
                     className="text-slate-400 max-w-md lg:text-right text-base leading-relaxed font-bold border-l-2 lg:border-l-0 lg:border-r-2 border-nepal-gold/30 pl-6 lg:pl-0 lg:pr-6"
                 >
-                    Navigate our high-tier visa classifications designed for global professionals,
-                    investors, and academic researchers seeking long-term integration in Nepal.
+                    Find the right visa for your stay in Nepal. We help professionals,
+                    investors, and students join our community.
                 </motion.p>
             </div>
 
@@ -234,7 +209,7 @@ const VisaTypes = () => (
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: i * 0.08 }}
-                        className="group relative bg-slate-950/30 backdrop-blur-[40px] border border-white/5 rounded-[2.5rem] p-6 lg:p-8 flex flex-col h-full
+                        className="group relative bg-slate-950/30 backdrop-blur-[40px] border border-white/5 rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 flex flex-col h-full
                                    hover:border-nepal-gold/40 hover:bg-slate-900/40 transition-all duration-700 overflow-hidden shadow-2xl"
                     >
                         {/* Interactive Background Glow */}
@@ -250,13 +225,13 @@ const VisaTypes = () => (
 
                         {/* Title & Description */}
                         <div className="space-y-3 mb-8 relative z-10">
-                            <span className="text-[10px] font-black text-nepal-gold uppercase tracking-[0.3em] block opacity-80 group-hover:opacity-100 transition-opacity">
+                            <span className="text-sm font-black text-nepal-gold uppercase tracking-[0.3em] block opacity-80 group-hover:opacity-100 transition-opacity">
                                 {type.subtitle}
                             </span>
-                            <h3 className="text-2xl lg:text-3xl font-black text-white tracking-tighter leading-none group-hover:text-nepal-gold transition-colors">
+                            <h3 className="text-2xl lg:text-4xl font-black text-white tracking-tighter leading-none group-hover:text-nepal-gold transition-colors">
                                 {type.title}
                             </h3>
-                            <p className="text-slate-400 text-[13px] leading-relaxed line-clamp-3 font-medium group-hover:text-slate-300 transition-colors">
+                            <p className="text-slate-400 text-base leading-relaxed line-clamp-3 font-medium group-hover:text-slate-300 transition-colors">
                                 {type.desc}
                             </p>
                         </div>
@@ -265,18 +240,18 @@ const VisaTypes = () => (
                         <div className="space-y-2 mt-auto relative z-10">
                             <div className="flex items-center gap-2 mb-4">
                                 <div className="h-px flex-1 bg-white/10" />
-                                <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.4em]">Protocol Details</span>
+                                <span className="text-sm font-black text-white/20 uppercase tracking-[0.4em]">Info</span>
                                 <div className="h-px flex-1 bg-white/10" />
                             </div>
 
                             <div className="grid grid-cols-2 gap-3 mb-6">
                                 <div className="bg-black/40 border border-white/5 rounded-2xl p-4 group-hover:border-white/10 transition-colors">
-                                    <span className="text-white/30 text-[8px] font-bold uppercase tracking-widest block mb-1">Time</span>
-                                    <span className="text-nepal-gold font-black text-xs tracking-tight">{type.days.split(' ')[0]} {type.days.split(' ')[1]}</span>
+                                    <span className="text-white/30 text-sm font-bold uppercase tracking-widest block mb-1">Time</span>
+                                    <span className="text-nepal-gold font-black text-base tracking-tight">{type.days.split(' ')[0]} {type.days.split(' ')[1]}</span>
                                 </div>
                                 <div className="bg-black/40 border border-white/5 rounded-2xl p-4 group-hover:border-white/10 transition-colors">
-                                    <span className="text-white/30 text-[8px] font-bold uppercase tracking-widest block mb-1">Fee Model</span>
-                                    <span className="text-white font-black text-xs tracking-tight group-hover:text-nepal-gold transition-colors">Officer Rates</span>
+                                    <span className="text-white/30 text-sm font-bold uppercase tracking-widest block mb-1">Fees</span>
+                                    <span className="text-white font-black text-base tracking-tight group-hover:text-nepal-gold transition-colors">Standard Fees</span>
                                 </div>
                             </div>
                         </div>
@@ -284,10 +259,10 @@ const VisaTypes = () => (
                         {/* Enhanced Action Button */}
                         <Link
                             href="/info"
-                            className="inline-flex items-center justify-center w-full py-4 rounded-xl bg-white/5 border border-white/10 text-white font-black text-[10px] tracking-[0.3em] uppercase
+                            className="inline-flex items-center justify-center w-full py-4 rounded-xl bg-white/5 border border-white/10 text-white font-black text-xs tracking-[0.3em] uppercase
                                        group-hover:bg-nepal-gold group-hover:text-nepal-navy group-hover:border-nepal-gold transition-all duration-500 shadow-2xl relative overflow-hidden active:scale-[0.98]"
                         >
-                            <span className="relative z-10">Classification Guide</span>
+                            <span className="relative z-10">Visa Guide</span>
                             <ArrowRight size={16} className="ml-3 translate-x-0 group-hover:translate-x-2 transition-transform relative z-10" />
                             <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500" />
                         </Link>
@@ -303,16 +278,16 @@ const VisaTypes = () => (
    Step-by-step application guide
 ══════════════════════════════════════════════════════════ */
 const steps = [
-    { num: '01', title: 'Identity Verification', desc: 'Securely upload your valid passport and biometric data for instant identity confirmation.', icon: ShieldCheck },
-    { num: '02', title: 'Portal Registration', desc: 'Generate your official applicant ID and credentials within our encrypted government ecosystem.', icon: Lock },
-    { num: '03', title: 'Digital Submission', desc: 'Complete the comprehensive application suite tailored to your specific residency purpose.', icon: FileText },
-    { num: '04', title: 'Protocol Review', desc: 'Your documentation enters the standard verification pipeline for ministerial screening.', icon: BadgeCheck },
-    { num: '05', title: 'Secure Transaction', desc: "Finalize officer fees through our AES-256 bit encrypted payment infrastructure.", icon: Zap },
-    { num: '06', title: 'Visa Grant Issued', desc: 'Receive your high-security digital visa grant letter via secure applicant correspondence.', icon: Award },
+    { num: '01', title: 'ID Check', desc: 'Securely upload your valid passport and info for quick identity check.', icon: ShieldCheck },
+    { num: '02', title: 'Sign Up', desc: 'Create your account on our secure system.', icon: Lock },
+    { num: '03', title: 'Easy Apply', desc: 'Fill out the simple application form for your visa type.', icon: FileText },
+    { num: '04', title: 'Review', desc: 'Your documents go through a standard review process.', icon: BadgeCheck },
+    { num: '05', title: 'Pay Safely', desc: "Finalize your payment through our secure system.", icon: Zap },
+    { num: '06', title: 'Get Visa', desc: 'Receive your official digital visa letter via our secure messaging system.', icon: Award },
 ];
 
 const HowItWorks = () => (
-    <section className="py-32 bg-nepal-snow border-b border-slate-200 relative overflow-hidden">
+    <section className="py-16 lg:py-32 bg-nepal-snow border-b border-slate-200 relative overflow-hidden">
 
         {/* Passport stamp watermarks */}
         <div className="absolute bottom-6 right-6 w-56 h-56 opacity-[0.06] pointer-events-none select-none rotate-[-15deg]">
@@ -343,23 +318,23 @@ const HowItWorks = () => (
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
-                        <span className="bg-nepal-navy text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-[0.3em] mb-6 inline-block">Portal Protocol</span>
-                        <h2 className="text-5xl lg:text-7xl font-black text-nepal-navy mb-8 tracking-tighter leading-[0.9]">
+                        <span className="bg-nepal-navy text-white px-4 py-2 rounded-lg text-sm font-black uppercase tracking-[0.3em] mb-6 inline-block">The Process</span>
+                        <h2 className="text-4xl lg:text-7xl font-black text-nepal-navy mb-8 tracking-tighter leading-[0.9]">
                             Streamlined<br />
-                            <span className="text-nepal-gold">E-Visa Pipeline</span>
+                            <span className="text-nepal-gold">Easy E-Visa</span>
                         </h2>
-                        <p className="text-slate-500 mb-10 leading-relaxed text-lg font-medium max-w-sm">
-                            Our end-to-end digital infrastructure reduces complexity, ensuring a secure and
-                            highly efficient application journey to the Himalayas.
+                        <p className="text-slate-500 mb-10 leading-relaxed text-xl font-medium max-w-sm">
+                            Our online system reduces complexity, ensuring a secure and
+                            easy application for your trip to the Himalayas.
                         </p>
                     </motion.div>
 
                     <div className="grid grid-cols-2 gap-4 mb-12">
                         {[
                             { icon: Activity, label: '99.9% Uptime', sub: 'Always Online' },
-                            { icon: Lock, label: 'AES-256 bit', sub: 'Bank Encryption' },
-                            { icon: BadgeCheck, label: 'Verified ID', sub: 'Interpol Integrated' },
-                            { icon: Globe, label: 'Global Access', sub: 'Every Continent' },
+                            { icon: Lock, label: 'Secure System', sub: 'Verified' },
+                            { icon: BadgeCheck, label: 'Verified ID', sub: 'Official' },
+                            { icon: Globe, label: 'Global Access', sub: 'Everywhere' },
                         ].map((item, i) => (
                             <motion.div
                                 key={i}
@@ -370,8 +345,8 @@ const HowItWorks = () => (
                                 className="bg-white border border-slate-200/60 rounded-2xl p-4 shadow-sm group hover:border-nepal-gold/50 transition-all cursor-default"
                             >
                                 <item.icon size={20} className="text-nepal-gold mb-3 transition-transform group-hover:scale-110" />
-                                <span className="text-[12px] font-black text-nepal-navy block mb-0.5">{item.label}</span>
-                                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{item.sub}</span>
+                                <span className="text-base font-black text-nepal-navy block mb-0.5">{item.label}</span>
+                                <span className="text-xs text-slate-400 font-bold uppercase tracking-widest">{item.sub}</span>
                             </motion.div>
                         ))}
                     </div>
@@ -400,10 +375,10 @@ const HowItWorks = () => (
                                 <div className="w-12 h-12 bg-nepal-navy text-nepal-gold rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-nepal-gold group-hover:text-nepal-navy transition-colors duration-500">
                                     <step.icon size={22} />
                                 </div>
-                                <span className="text-[11px] font-black uppercase tracking-[0.3em] text-nepal-gold">Step {step.num}</span>
+                                <span className="text-sm font-black uppercase tracking-[0.3em] text-nepal-gold">Step {step.num}</span>
                             </div>
-                            <h3 className="text-xl font-black text-nepal-navy mb-3 relative z-10 group-hover:text-nepal-gold transition-colors">{step.title}</h3>
-                            <p className="text-slate-500 text-sm leading-relaxed relative z-10 font-medium group-hover:text-slate-600 transition-colors">{step.desc}</p>
+                            <h3 className="text-2xl font-black text-nepal-navy mb-3 relative z-10 group-hover:text-nepal-gold transition-colors">{step.title}</h3>
+                            <p className="text-slate-500 text-base leading-relaxed relative z-10 font-medium group-hover:text-slate-600 transition-colors">{step.desc}</p>
                         </motion.div>
                     ))}
                 </div>
@@ -418,7 +393,7 @@ const HowItWorks = () => (
    Final call to action with high-res imagery
 ══════════════════════════════════════════════════════════ */
 const CTA = () => (
-    <section className="py-24 bg-nepal-snow relative overflow-hidden">
+    <section className="py-12 lg:py-24 bg-nepal-snow relative overflow-hidden pb-32 lg:pb-24">
         {/* Background elements */}
         <div className="absolute inset-0 pointer-events-none z-0">
             <FlightPathSVG
@@ -438,7 +413,7 @@ const CTA = () => (
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="relative bg-[#020617] rounded-[3rem] overflow-hidden shadow-[0_100px_150px_-50px_rgba(0,0,0,0.4)] border border-white/5"
+                className="relative bg-[#020617] rounded-[2rem] lg:rounded-[3rem] overflow-hidden shadow-[0_100px_150px_-50px_rgba(0,0,0,0.4)] border border-white/5"
             >
                 {/* NEW HIGH-RES PLANE BACKGROUND 2 */}
                 <motion.div
@@ -469,31 +444,31 @@ const CTA = () => (
                     <KathmanduHub />
                 </div>
 
-                <div className="relative z-10 px-10 py-16 lg:py-20 flex flex-col lg:flex-row items-center justify-between gap-12 lg:px-16">
+                <div className="relative z-10 px-6 py-12 lg:py-20 flex flex-col lg:flex-row items-center justify-between gap-12 lg:px-16">
                     <div className="max-w-xl text-center lg:text-left">
                         <motion.span
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="text-[9px] font-black uppercase tracking-[0.4em] text-nepal-gold mb-4 block"
+                            className="text-sm font-black uppercase tracking-[0.4em] text-nepal-gold mb-4 block"
                         >
-                            Official PATHFINDER NEPAL PORTAL
+                            Visit Nepal
                         </motion.span>
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="text-3xl lg:text-5xl font-black text-white mb-6 tracking-tighter leading-[0.9]"
+                            className="text-2xl lg:text-5xl font-black text-white mb-6 tracking-tighter leading-[0.9]"
                         >
                             Ready to Begin Your<br />
                             <span className="text-nepal-gold italic">Journey to Nepal?</span>
                         </motion.h2>
-                        <p className="text-white/50 text-base leading-relaxed mb-8 font-medium max-w-lg mx-auto lg:mx-0">
-                            Join over 50,000 global citizens who have successfully traversed the Himalayas
-                            through our secure digital ecosystem.
+                        <p className="text-white/50 text-lg leading-relaxed mb-8 font-medium max-w-lg mx-auto lg:mx-0">
+                            Join thousands of global citizens who have traveled to the Himalayas
+                            through our secure website.
                         </p>
-                        <div className="flex flex-wrap justify-center lg:justify-start gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
-                            {['Biometric SSL', 'Interpol API', 'Cloud Infrastructure', 'Live Monitoring'].map(t => (
+                        <div className="flex flex-wrap justify-center lg:justify-start gap-8 text-sm font-black uppercase tracking-[0.2em] text-white/40">
+                            {['Secure Login', 'Safe System', 'Online Now', '24/7 Support'].map(t => (
                                 <span key={t} className="flex items-center gap-2 group cursor-default">
                                     <span className="w-1.5 h-1.5 rounded-full bg-nepal-gold animate-pulse group-hover:scale-150 transition-transform" /> {t}
                                 </span>
@@ -510,8 +485,8 @@ const CTA = () => (
                         <Link href="/track" className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 text-white px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all backdrop-blur-md">
                             <Clock size={18} className="text-nepal-gold" /> Track Status
                         </Link>
-                        <Link href="/contact" className="text-center text-white/40 hover:text-nepal-gold text-[10px] font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 mt-2 group">
-                            System Help Desk <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                        <Link href="/contact" className="text-center text-white/40 hover:text-nepal-gold text-xs font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 mt-2 group">
+                            Support Center <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
                 </div>
@@ -528,7 +503,6 @@ export default function Home() {
     return (
         <div className="bg-white">
             <Hero />
-            <TrustBanner />
             <VisaTypes />
             <HowItWorks />
             <CTA />

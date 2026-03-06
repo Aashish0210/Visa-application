@@ -17,6 +17,17 @@ const FlightPathSVG = ({ viewBox = '0 0 1440 520', paths }: any) => (
 const FAQPage = () => {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
     const [searchQuery, setSearchQuery] = useState('');
+    const faqRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (faqRef.current && !faqRef.current.contains(event.target as Node)) {
+                setOpenIndex(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const faqs = [
         {
@@ -50,16 +61,21 @@ const FAQPage = () => {
         <main className="min-h-screen bg-white overflow-hidden font-outfit">
             {/* ── Cinematic Hero Architecture ── */}
             <section className="relative pt-40 pb-24 bg-nepal-navy overflow-hidden">
-                <div className="absolute inset-0 opacity-20 scale-105">
+                <motion.div
+                    initial={{ scale: 1, x: 0 }}
+                    animate={{ scale: [1, 1.15, 1], x: [-30, 0, -30] }}
+                    transition={{ duration: 42, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 opacity-25"
+                >
                     <Image
-                        src="/images/mount_everest.png"
+                        src="/images/culture.png"
                         alt=""
                         fill
                         className="object-cover"
                         priority
                     />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-b from-nepal-navy/80 via-nepal-navy to-white" />
+                </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-b from-nepal-navy/85 via-nepal-navy to-nepal-navy" />
 
                 {/* Decorative Flight Path */}
                 <div className="absolute inset-0 pointer-events-none z-[1]">
@@ -79,23 +95,23 @@ const FAQPage = () => {
                     >
                         <div className="flex items-center gap-4 mb-6">
                             <span className="w-12 h-[2px] bg-nepal-gold" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nepal-gold">Knowledge Base Terminal</span>
+                            <span className="text-sm font-black uppercase tracking-[0.4em] text-nepal-gold">Help & Support</span>
                         </div>
                         <h1 className="text-5xl lg:text-8xl font-black text-white mb-8 tracking-tighter leading-[0.85]">
-                            Mission <span className="text-nepal-gold italic">Intelligence</span>
+                            Quick <span className="text-nepal-gold italic">Answers</span>
                         </h1>
-                        <p className="text-slate-300 text-lg lg:text-xl font-medium max-w-2xl leading-relaxed">
-                            Access real-time answers and procedural clarity for the Nepal Long-Term
-                            Visa ecosystem. Our database is synchronized with latest immigration protocols.
+                        <p className="text-slate-300 text-2xl lg:text-3xl font-medium max-w-2xl leading-relaxed">
+                            Find clear answers about the Nepal Visa
+                            system. These answers are based on the latest rules.
                         </p>
                     </motion.div>
                 </div>
             </section>
 
             {/* ── FAQ Infrastructure ── */}
-            <section className="py-24 bg-white relative z-10 -mt-10">
+            <section className="py-24 bg-white relative z-10 -mt-2">
                 <div className="container mx-auto px-6 max-w-5xl">
-                    {/* Search Architecture */}
+                    {/* Search Questions */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -103,22 +119,22 @@ const FAQPage = () => {
                         className="relative mb-24 group/field"
                     >
                         <div className="absolute -inset-[2px] bg-gradient-to-r from-nepal-gold/50 to-transparent rounded-[2.5rem] opacity-0 group-focus-within/field:opacity-100 transition-opacity blur-[2px]" />
-                        <div className="relative flex items-center bg-white border border-slate-200 rounded-[2.5rem] group-focus-within/field:border-nepal-gold/50 transition-all duration-500 overflow-hidden shadow-2xl shadow-slate-200/50 hover:shadow-3xl">
+                        <div className="relative flex items-center bg-white border border-slate-300 rounded-[2.5rem] group-focus-within/field:border-nepal-gold group-focus-within/field:shadow-2xl group-focus-within/field:shadow-nepal-gold/15 transition-all duration-500 overflow-hidden shadow-2xl shadow-slate-200/50 hover:shadow-3xl">
                             <div className="pl-10 text-slate-400 group-focus-within/field:text-nepal-gold transition-colors">
                                 <Search size={24} strokeWidth={2.5} />
                             </div>
                             <input
                                 type="text"
-                                placeholder="SEARCH KNOWLEDGE ARCHIVE..."
+                                placeholder="ASK A QUESTION..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-transparent px-8 py-8 text-nepal-navy font-black placeholder:text-slate-300 placeholder:font-black outline-none text-xl"
+                                className="w-full bg-transparent px-8 py-8 text-nepal-navy font-black placeholder:text-slate-400 placeholder:font-black outline-none text-2xl"
                             />
                         </div>
                     </motion.div>
 
                     {/* FAQ Grid */}
-                    <div className="space-y-6">
+                    <div className="space-y-6" ref={faqRef}>
                         {filteredFaqs.length > 0 ? (
                             filteredFaqs.map((faq, i) => (
                                 <motion.div
@@ -132,7 +148,7 @@ const FAQPage = () => {
                                         onClick={() => setOpenIndex(openIndex === i ? null : i)}
                                         className="w-full text-left px-10 py-10 flex items-center justify-between gap-8 group"
                                     >
-                                        <span className={`text-xl font-black tracking-tight leading-snug transition-colors ${openIndex === i ? 'text-nepal-gold italic' : 'text-nepal-navy'}`}>
+                                        <span className={`text-2xl font-black tracking-tight leading-snug transition-colors ${openIndex === i ? 'text-nepal-gold italic' : 'text-nepal-navy'}`}>
                                             {faq.q}
                                         </span>
                                         <div className={`shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-xl ${openIndex === i ? 'bg-nepal-navy text-nepal-gold rotate-180' : 'bg-slate-50 text-slate-400 group-hover:bg-nepal-gold/10'}`}>
@@ -147,7 +163,7 @@ const FAQPage = () => {
                                                 exit={{ height: 0, opacity: 0 }}
                                                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                                             >
-                                                <div className="px-10 pb-10 text-slate-500 font-medium leading-relaxed pt-2">
+                                                <div className="px-10 pb-10 text-slate-500 font-medium text-lg leading-relaxed pt-2">
                                                     <div className="h-[2px] w-12 bg-nepal-gold/30 mb-8" />
                                                     {faq.a}
                                                 </div>
@@ -159,7 +175,7 @@ const FAQPage = () => {
                         ) : (
                             <div className="text-center py-20 bg-slate-50 rounded-[4rem] border border-dashed border-slate-200">
                                 <HelpCircle className="mx-auto text-slate-200 mb-6" size={60} />
-                                <p className="text-slate-400 font-black uppercase tracking-widest text-xs italic">No matching intelligence patterns found.</p>
+                                <p className="text-slate-400 font-black uppercase tracking-widest text-lg italic">No answers found.</p>
                             </div>
                         )}
                     </div>
@@ -177,15 +193,15 @@ const FAQPage = () => {
                             <div className="w-20 h-20 bg-nepal-gold rounded-[2rem] flex items-center justify-center mb-10 shadow-3xl shadow-nepal-gold/20 rotate-12 group-hover:rotate-0 transition-transform">
                                 <MessageSquare className="text-nepal-navy" size={32} />
                             </div>
-                            <h3 className="text-4xl lg:text-6xl font-black tracking-tighter mb-6 uppercase italic leading-none">Terminal <span className="text-nepal-gold">Human Support</span></h3>
-                            <p className="text-white/40 font-bold uppercase tracking-widest text-[11px] mb-12">Active Sync: Sun-Fri • 10:00 - 17:00 NPT</p>
+                            <h3 className="text-4xl lg:text-7xl font-black tracking-tighter mb-6 uppercase italic leading-none">Need More <span className="text-nepal-gold">Help?</span></h3>
+                            <p className="text-white/40 font-bold uppercase tracking-widest text-lg mb-12">We are here: Sun-Fri • 10 AM - 5 PM</p>
 
                             <div className="grid sm:grid-cols-2 gap-4 w-full">
-                                <a href="mailto:support@immigration.gov.np" className="group flex items-center justify-between bg-white text-nepal-navy px-10 py-6 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-nepal-gold transition-all">
-                                    Email Nexus <ArrowUpRight size={16} />
+                                <a href="mailto:support@immigration.gov.np" className="group flex items-center justify-between bg-white text-nepal-navy px-10 py-6 rounded-2xl font-black text-sm uppercase tracking-[0.3em] hover:bg-nepal-gold transition-all">
+                                    Email Us <ArrowUpRight size={16} />
                                 </a>
-                                <a href="tel:+97714429660" className="group flex items-center justify-between border border-white/10 text-white px-10 py-6 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-white/5 transition-all">
-                                    Direct Uplink <Phone size={16} />
+                                <a href="tel:+97714429660" className="group flex items-center justify-between border border-white/10 text-white px-10 py-6 rounded-2xl font-black text-sm uppercase tracking-[0.3em] hover:bg-white/5 transition-all">
+                                    Call Us <Phone size={16} />
                                 </a>
                             </div>
                         </div>
@@ -194,7 +210,7 @@ const FAQPage = () => {
                     {/* Footer Meta */}
                     <div className="mt-16 flex items-center justify-center gap-6 opacity-30">
                         <Zap size={16} className="text-nepal-gold" />
-                        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Knowledge Core v4.2 // Real-time Synchronization Enabled</p>
+                        <p className="text-base font-black uppercase tracking-[0.4em] text-slate-400">Official Support</p>
                     </div>
                 </div>
             </section>

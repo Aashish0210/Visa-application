@@ -19,10 +19,10 @@ const RequirementsPage = () => {
     const [activeTab, setActiveTab] = useState('general');
 
     const categories = [
-        { id: 'general', label: 'All Applicants', icon: FileText, subtitle: "Standard Protocol" },
-        { id: 'working', label: 'Working Visa', icon: Briefcase, subtitle: "Labor Compliance" },
-        { id: 'study', label: 'Study Visa', icon: GraduationCap, subtitle: "Academic Intake" },
-        { id: 'residential', label: 'Residential Visa', icon: Building2, subtitle: "Long-term Assets" },
+        { id: 'general', label: 'All Applicants', icon: FileText, subtitle: "Basic Info" },
+        { id: 'working', label: 'Working Visa', icon: Briefcase, subtitle: "Job Info" },
+        { id: 'study', label: 'Study Visa', icon: GraduationCap, subtitle: "Student Info" },
+        { id: 'residential', label: 'Residential Visa', icon: Building2, subtitle: "Resident Info" },
     ];
 
     const requirements = {
@@ -35,41 +35,55 @@ const RequirementsPage = () => {
         ],
         working: [
             "Official Appointment Letter from the registered employer in Nepal.",
-            "Ministerial Approval (Department of Labor / Tourism / Industry).",
+            "Government Approval (Department of Labor / Tourism / Industry).",
             "Company registration and tax clearance certificates (Latest FY).",
             "Professional Bio-data (CV/Resume) detailing relevant expertise.",
-            "Consular work permit issued by the Ministry of Labor."
+            "Work permit issued by the Ministry of Labor."
         ],
         study: [
-            "Letter of Admission from a University Grant Commission (UGC) institution.",
+            "Letter of Admission from a University.",
             "Official recommendation from the Ministry of Education of Nepal.",
-            "Proof of financial liquidity (Last 6 months verified statements).",
-            "Attested academic transcripts from previous institutions.",
+            "Proof of money in bank (Last 6 months verified statements).",
+            "Academic transcripts from previous institutions.",
             "No Objection Certificate (NOC) from your home country's embassy."
         ],
         residential: [
             "Verified evidence of investment in Nepal (Min. $100,000 USD equivalent).",
             "Retiree status only: Verified annual income/pension of $20,000+ USD.",
-            "Interpol-integrated Police Clearance Certificate (Last 6 months).",
+            "Police Report (Last 6 months).",
             "Official health clearance issued by a certified Nepalese facility.",
-            "Notarized property title or authorized long-term lease agreement."
-        ]
+            "Property documents or authorized long-term lease agreement."
+        ],
     };
 
     return (
         <main className="min-h-screen bg-white overflow-hidden font-outfit">
             {/* ── Cinematic Hero Architecture ── */}
-            <section className="relative pt-40 pb-24 bg-nepal-navy overflow-hidden">
-                <div className="absolute inset-0 opacity-20 scale-110">
+            <section className="relative pt-24 lg:pt-40 pb-16 lg:pb-24 bg-nepal-navy overflow-hidden">
+                <motion.div
+                    initial={{ scale: 1, x: 0, y: 0 }}
+                    animate={{
+                        scale: [1, 1.1, 1],
+                        x: [20, 0, 20],
+                        y: [-10, 0, -10]
+                    }}
+                    transition={{
+                        duration: 35,
+                        repeat: Infinity,
+                        repeatType: "mirror",
+                        ease: "linear"
+                    }}
+                    className="absolute inset-0 opacity-25"
+                >
                     <Image
-                        src="/images/mount_everest.png"
+                        src="/images/airplane_bg_2.png"
                         alt=""
                         fill
                         className="object-cover"
                         priority
                     />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-b from-nepal-navy/80 via-nepal-navy to-white" />
+                </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-b from-nepal-navy/85 via-nepal-navy to-nepal-navy" />
 
                 {/* Decorative Flight Path */}
                 <div className="absolute inset-0 pointer-events-none z-[1]">
@@ -87,23 +101,23 @@ const RequirementsPage = () => {
                         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                         className="max-w-4xl"
                     >
-                        <div className="flex items-center gap-4 mb-6">
-                            <span className="w-12 h-[2px] bg-nepal-gold" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-nepal-gold">Documentation Pipeline</span>
+                        <div className="flex items-center gap-4 mb-4">
+                            <span className="w-10 h-[2px] bg-nepal-gold" />
+                            <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.5em] text-nepal-gold">Official Checklist</span>
                         </div>
-                        <h1 className="text-4xl lg:text-7xl font-black text-white mb-8 tracking-tighter leading-[0.85]">
-                            Required <span className="text-nepal-gold italic">Checklist</span>
+                        <h1 className="text-3xl lg:text-6xl font-black text-white mb-6 tracking-tighter leading-[0.9]">
+                            Document <span className="text-nepal-gold italic">Checklist</span>
                         </h1>
-                        <p className="text-slate-300 text-lg lg:text-xl font-medium max-w-2xl leading-relaxed">
-                            Ensure all documentation is verified and digitally ready before initiating your application protocol.
-                            High-quality scans are mandatory for archival security.
+                        <p className="text-slate-300 text-lg lg:text-xl font-medium max-w-2xl leading-relaxed opacity-80">
+                            Make sure all your documents are ready before starting your application.
+                            Clear scans are needed for our records.
                         </p>
                     </motion.div>
                 </div>
             </section>
 
             {/* ── Tabs & Requirement Orchestration ── */}
-            <section className="py-24 bg-white relative z-10">
+            <section className="py-12 lg:py-24 bg-white relative z-10 -mt-2">
                 <div className="container mx-auto px-6 max-w-6xl">
                     {/* Premium Glass Tabs */}
                     <div className="flex flex-wrap items-center justify-center gap-3 mb-16">
@@ -111,13 +125,13 @@ const RequirementsPage = () => {
                             <button
                                 key={cat.id}
                                 onClick={() => setActiveTab(cat.id)}
-                                className={`relative flex flex-col items-center gap-2 px-8 py-5 rounded-3xl transition-all duration-500 min-w-[160px] group ${activeTab === cat.id
+                                className={`relative flex flex-col items-center gap-2 px-6 lg:px-8 py-4 lg:py-5 rounded-3xl transition-all duration-500 min-w-[140px] lg:min-w-[160px] group ${activeTab === cat.id
                                     ? 'bg-nepal-navy text-white shadow-[0_20px_40px_-10px_rgba(27,43,75,0.3)] scale-105'
                                     : 'bg-slate-50 text-slate-400 hover:bg-white hover:border-slate-200 border border-transparent'
                                     }`}
                             >
                                 <cat.icon size={22} className={activeTab === cat.id ? 'text-nepal-gold' : 'group-hover:text-nepal-gold transition-colors'} />
-                                <span className={`text-[10px] font-black uppercase tracking-widest ${activeTab === cat.id ? 'opacity-100' : 'opacity-60'}`}>{cat.label}</span>
+                                <span className={`text-sm font-black uppercase tracking-widest ${activeTab === cat.id ? 'opacity-100' : 'opacity-60'}`}>{cat.label}</span>
                                 {activeTab === cat.id && (
                                     <motion.div
                                         layoutId="tab-underline"
@@ -138,14 +152,14 @@ const RequirementsPage = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                             >
-                                <span className="text-nepal-gold font-black uppercase text-[10px] tracking-[0.3em] block mb-2">
+                                <span className="text-nepal-gold font-black uppercase text-sm tracking-[0.3em] block mb-2">
                                     {categories.find(c => c.id === activeTab)?.subtitle}
                                 </span>
-                                <h2 className="text-4xl font-black text-nepal-navy tracking-tighter mb-6">
+                                <h2 className="text-3xl lg:text-5xl font-black text-nepal-navy tracking-tighter mb-6">
                                     {categories.find(c => c.id === activeTab)?.label}
                                 </h2>
-                                <p className="text-slate-500 font-medium leading-relaxed mb-8">
-                                    Specific documentation required to validate your entry under the {categories.find(c => c.id === activeTab)?.label.toLowerCase()} framework.
+                                <p className="text-slate-500 font-medium leading-relaxed mb-8 text-lg">
+                                    Documents needed to apply for a {categories.find(c => c.id === activeTab)?.label.toLowerCase()}.
                                 </p>
 
                                 <div className="space-y-4">
@@ -154,8 +168,8 @@ const RequirementsPage = () => {
                                             <ShieldCheck size={20} />
                                         </div>
                                         <div>
-                                            <p className="text-[10px] font-black text-nepal-navy uppercase tracking-widest">Security Clearance</p>
-                                            <p className="text-xs text-slate-400 font-bold">Encrypted Submission</p>
+                                            <p className="text-sm font-black text-nepal-navy uppercase tracking-widest">Safe & Secure</p>
+                                            <p className="text-base text-slate-400 font-bold">Secure Upload</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100">
@@ -163,8 +177,8 @@ const RequirementsPage = () => {
                                             <Clock size={20} />
                                         </div>
                                         <div>
-                                            <p className="text-[10px] font-black text-nepal-navy uppercase tracking-widest">Review Period</p>
-                                            <p className="text-xs text-slate-400 font-bold">Standard Gov Pipe</p>
+                                            <p className="text-sm font-black text-nepal-navy uppercase tracking-widest">Review Time</p>
+                                            <p className="text-base text-slate-400 font-bold">Normal Review</p>
                                         </div>
                                     </div>
                                 </div>
@@ -188,12 +202,12 @@ const RequirementsPage = () => {
                                             initial={{ opacity: 0, y: 16 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: i * 0.04, duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-                                            className="flex items-start gap-6 p-8 rounded-[2rem] bg-white border border-slate-100 hover:border-nepal-gold/30 hover:shadow-xl hover:shadow-nepal-gold/5 transition-all group"
+                                            className="flex items-start gap-4 lg:gap-6 p-6 lg:p-8 rounded-[2rem] bg-white border border-slate-100 hover:border-nepal-gold/30 hover:shadow-xl hover:shadow-nepal-gold/5 transition-all group"
                                         >
                                             <div className="mt-1 w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                                                 <CheckCircle2 size={16} />
                                             </div>
-                                            <p className="text-slate-700 leading-relaxed font-bold group-hover:text-nepal-navy transition-colors">{req}</p>
+                                            <p className="text-slate-700 leading-relaxed font-bold text-lg lg:text-xl group-hover:text-nepal-navy transition-colors">{req}</p>
                                         </motion.div>
                                     ))}
 
@@ -206,9 +220,9 @@ const RequirementsPage = () => {
                                                 <AlertCircle size={24} />
                                             </div>
                                             <div>
-                                                <h4 className="font-black text-nepal-navy uppercase text-xs tracking-widest mb-2">Technical Standards</h4>
-                                                <p className="text-slate-600/80 leading-relaxed text-sm font-medium max-w-xl">
-                                                    All documentation must be in <span className="text-nepal-navy font-bold">Official English</span>. If the original documents are in another language, they must be accompanied by an officially notarized English translation. Max file size: <span className="text-nepal-navy font-bold text-base">2MB per file</span>.
+                                                <h4 className="font-black text-nepal-navy uppercase text-base tracking-widest mb-2">Rules</h4>
+                                                <p className="text-slate-600/80 leading-relaxed text-lg font-medium max-w-xl">
+                                                    All documents must be in <span className="text-nepal-navy font-bold">English Only</span>. If your documents are in another language, you must provide a certified English translation. Max file size: <span className="text-nepal-navy font-bold text-xl">2MB per file</span>.
                                                 </p>
                                             </div>
                                         </div>
@@ -221,7 +235,7 @@ const RequirementsPage = () => {
             </section>
 
             {/* ── CTA Final Node ── */}
-            <section className="py-24 pb-32">
+            <section className="py-12 lg:py-24 pb-32 lg:pb-32">
                 <div className="container mx-auto px-6 max-w-4xl text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 32 }}
@@ -236,15 +250,15 @@ const RequirementsPage = () => {
                         </div>
 
                         <div className="relative z-10">
-                            <h3 className="text-4xl lg:text-6xl font-black text-white mb-6 tracking-tighter">Ready to Submit?</h3>
-                            <p className="text-white/50 text-lg font-medium mb-10 max-w-lg mx-auto leading-relaxed">
-                                Join our encrypted ecosystem for a seamless application experience. Your journey to Nepal starts here.
+                            <h3 className="text-3xl lg:text-7xl font-black text-white mb-6 tracking-tighter leading-[0.9]">Ready to Submit?</h3>
+                            <p className="text-white/50 text-lg lg:text-2xl font-medium mb-10 max-w-lg mx-auto leading-relaxed">
+                                Join our secure system for a smooth application. Your journey to Nepal starts here.
                             </p>
                             <Link
                                 href="/apply"
-                                className="inline-flex items-center justify-center gap-3 bg-nepal-gold text-nepal-navy px-12 py-6 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(212,160,23,0.3)]"
+                                className="inline-flex items-center justify-center gap-3 bg-nepal-gold text-nepal-navy px-12 py-6 rounded-2xl font-black text-base uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_rgba(212,160,23,0.3)]"
                             >
-                                Start Application Access <ArrowRight size={20} />
+                                Start Application <ArrowRight size={20} />
                             </Link>
                         </div>
                     </motion.div>

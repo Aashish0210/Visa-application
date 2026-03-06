@@ -88,6 +88,10 @@ export async function POST(req: NextRequest) {
             documents: documents || {},
             status: 'Pending',
             submittedAt: new Date().toISOString(),
+            isNewUpdate: true, // Flag as brand new for admin
+            recentlyUpdatedDocs: Object.keys(documents || {}), // All docs are new initially
+            rejectedDocuments: [],
+            adminFeedback: ''
         };
 
         applications.unshift(newApp);
@@ -109,7 +113,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
     try {
         const body = await req.json();
-        const { refId, status, linkEmail, passportNumber, rejectedDocuments, adminFeedback } = body;
+        const { refId, status, linkEmail, passportNumber, documents, rejectedDocuments, adminFeedback } = body;
         const applications = readApplications();
         const index = applications.findIndex((a: any) => a.refId === refId || a.id === refId);
 
@@ -125,23 +129,78 @@ export async function PATCH(req: NextRequest) {
             applications[index].email = linkEmail.trim().toLowerCase();
         }
 
-        // Status update functionality
+        // Document update (Client "Fix Issues")
+        if (documents) {
+            const updatedDocNames = Object.keys(documents);
+            applications[index].documents = { ...applications[index].documents, ...documents };
+            applications[index].status = 'Under Review'; // Move back to review
+            applications[index].isNewUpdate = true; // Flag for admin notification
+
+            // Add to recently updated, avoiding duplicates
+            const currentRecent = applications[index].recentlyUpdatedDocs || [];
+            applications[index].recentlyUpdatedDocs = Array.from(new Set([...currentRecent, ...updatedDocNames]));
+
+            // Remove ONLY the updated documents from the rejected list
+            const currentRejected = applications[index].rejectedDocuments || [];
+            applications[index].rejectedDocuments = currentRejected.filter((doc: string) => !updatedDocNames.includes(doc));
+
+            // We can keep adminFeedback so user knows what they fixed, or clear it.
+            // Let's clear it to show the "Fix" was submitted.
+            applications[index].adminFeedback = '';
+        }
+
+        if (body.isNewUpdate === false) {
+            applications[index].isNewUpdate = false;
+            applications[index].recentlyUpdatedDocs = []; // Clear tracked updates
+        }
+
+        // Status update functionality (Admin/System)
         if (status) {
-            const validStatuses = ['Pending', 'Under Review', 'In Progress', 'Approved', 'Rejected'];
+            const validStatuses = ['Pending', 'Under Review', 'In Progress', 'Approved', 'Rejected', 'Awaiting Payment'];
             if (!validStatuses.includes(status)) {
                 return NextResponse.json({ success: false, error: 'Invalid status.' }, { status: 400 });
             }
             applications[index].status = status;
         }
 
-        // Handle rejected documents tracking
+        // Payment Processing logic
+        if (body.paymentStatus) {
+            applications[index].paymentStatus = body.paymentStatus;
+            applications[index].paidAt = body.paidAt || new Date().toISOString();
+
+            // Generate a receipt if one isn't provided
+            if (!applications[index].receipt) {
+                applications[index].receipt = body.receipt || {
+                    transactionId: `TXN-${Math.random().toString(36).substring(2, 11).toUpperCase()}`,
+                    amount: "150.00",
+                    currency: "USD",
+                    method: body.paymentMethod || "Global Card"
+                };
+            }
+
+            // Set issuance timeline message
+            applications[index].issuanceTimeline = "Your visa is estimated to be issued within 5-7 business days. A digital copy will be sent to your registered email address.";
+
+            // Mark as new update for admin to see the payment
+            applications[index].isNewUpdate = true;
+            applications[index].recentlyUpdatedDocs = applications[index].recentlyUpdatedDocs || [];
+            if (!applications[index].recentlyUpdatedDocs.includes('PAYMENT_RECEIPT')) {
+                applications[index].recentlyUpdatedDocs.push('PAYMENT_RECEIPT');
+            }
+        }
+
+        // Handle rejected documents tracking (Admin)
         if (rejectedDocuments) {
             applications[index].rejectedDocuments = rejectedDocuments;
         }
 
-        // Handle admin feedback
+        // Handle admin feedback (Admin)
         if (adminFeedback !== undefined) {
             applications[index].adminFeedback = adminFeedback;
+        }
+
+        if (body.issuanceTimeline) {
+            applications[index].issuanceTimeline = body.issuanceTimeline;
         }
 
         applications[index].updatedAt = new Date().toISOString();

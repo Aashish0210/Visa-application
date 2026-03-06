@@ -16,11 +16,28 @@ interface ChatMessage {
 const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<ChatMessage[]>([
-        { id: 1, text: "Namaste! 🙏 I am your AI Visa Assistant for Nepal. How can I help you with your journey to the Himalayas today?", sender: 'bot', timestamp: new Date() }
+        { id: 1, text: "Namaste! 🙏 I am your Visa Assistant for Nepal. How can I help you with your journey today?", sender: 'bot', timestamp: new Date() }
     ]);
     const [inputValue, setInputValue] = useState('');
     const [isTyping, setIsTyping] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
+    const chatRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (chatRef.current && !chatRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen]);
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -74,17 +91,17 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-[100]">
+        <div className="fixed bottom-28 lg:bottom-6 right-4 md:right-6 z-[100]" ref={chatRef}>
             {/* Launcher */}
             <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-14 h-14 bg-nepal-blue rounded-full flex items-center justify-center shadow border-4 border-white text-white relative"
+                className="w-12 h-12 md:w-14 md:h-14 bg-nepal-blue rounded-full flex items-center justify-center shadow-2xl border-2 md:border-4 border-white text-white relative"
             >
-                {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
+                {isOpen ? <X size={20} className="md:size-6" /> : <MessageSquare size={20} className="md:size-6" />}
                 {!isOpen && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-nepal-gold rounded-full border-2 border-white animate-pulse"></span>
+                    <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-nepal-gold rounded-full border-2 border-white animate-pulse"></span>
                 )}
             </motion.button>
 
@@ -92,12 +109,12 @@ const Chatbot = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: 50, x: 20 }}
+                        initial={{ opacity: 0, scale: 0.9, y: 20, x: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-                        exit={{ opacity: 0, scale: 0.8, y: 50, x: 20 }}
-                        className="absolute bottom-20 right-0 w-[380px] h-[550px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden"
+                        exit={{ opacity: 0, scale: 0.9, y: 20, x: 10 }}
+                        className="absolute bottom-16 md:bottom-20 right-0 w-[calc(100vw-32px)] md:w-[380px] h-[75vh] md:h-[550px] bg-white dark:bg-slate-900 rounded-3xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden"
                     >
-                        <div className="bg-nepal-blue p-4 text-white flex items-center justify-between">
+                        <div className="bg-nepal-blue p-5 text-white flex items-center justify-between">
                             <div className="flex items-center space-x-3">
                                 <div className="w-10 h-10 bg-white/10 rounded flex items-center justify-center border border-white/20">
                                     <Bot size={22} />
@@ -106,7 +123,7 @@ const Chatbot = () => {
                                     <h3 className="font-bold text-sm">Nepal Visa Helper</h3>
                                     <div className="flex items-center space-x-1.5">
                                         <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                                        <span className="text-[10px] text-white/80">Online | AI Powered</span>
+                                        <span className="text-xs text-white/80">Online | Available</span>
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +194,7 @@ const Chatbot = () => {
                                 </button>
                             </div>
                             <div className="mt-3 flex justify-center">
-                                <p className="text-[10px] text-slate-400">Official Immigration Assistant • Secure Channel</p>
+                                <p className="text-xs text-slate-400">Visa Support • Secure Channel</p>
                             </div>
                         </div>
                     </motion.div>

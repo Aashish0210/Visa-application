@@ -9,8 +9,8 @@ import {
 } from 'lucide-react';
 
 /* ── Demo credentials (swap with real auth later) ── */
-const ADMIN_EMAIL = 'admin@pathfindernepal.gov.np';
-const ADMIN_PASSWORD = 'Admin@2026';
+const ADMIN_EMAIL = 'admin@pathfinder.gov';
+const ADMIN_PASSWORD = 'Nepal@Secure2026';
 const SESSION_KEY = 'pf_admin_session';
 
 const ScanLine = () => (

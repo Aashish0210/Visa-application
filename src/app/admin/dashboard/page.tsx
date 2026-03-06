@@ -21,6 +21,8 @@ interface Application {
     documents?: Record<string, string>;
     rejectedDocuments?: string[];
     adminFeedback?: string;
+    isNewUpdate?: boolean;
+    recentlyUpdatedDocs?: string[];
 }
 interface Contact {
     id: string; name: string; email: string; department: string;
@@ -188,7 +190,7 @@ export default function AdminDashboard() {
 
         // Check persistent credentials first, then fallback to session, then default
         const creds = JSON.parse(localStorage.getItem('pf_admin_credentials') || '{}');
-        const storedPwd = creds.password || session.password || 'Admin@2026';
+        const storedPwd = creds.password || session.password || 'Nepal@Secure2026';
 
         if (curPwd !== storedPwd) { setPwdError('Current password is incorrect.'); return; }
         if (newPwd.length < 8) { setPwdError('New password must be at least 8 characters.'); return; }
@@ -294,7 +296,8 @@ export default function AdminDashboard() {
     const handleLogout = () => { localStorage.removeItem(SESSION_KEY); router.replace('/admin/login'); };
 
     const unreadCount = contacts.filter(c => c.status === 'Unread').length;
-    const pendingCount = applications.filter(a => a.status === 'Pending').length;
+    const pendingCount = applications.filter(a => a.status === 'Pending' || a.status === 'Under Review').length;
+    const updatedCount = applications.filter(a => a.isNewUpdate).length;
 
     const filteredApps = applications.filter(a => {
         const q = searchQuery.toLowerCase();
@@ -350,10 +353,13 @@ export default function AdminDashboard() {
                                     {unreadCount}
                                 </span>
                             )}
-                            {item.id === 'applications' && pendingCount > 0 && (
-                                <span className="ml-auto min-w-[22px] h-[22px] px-1.5 bg-amber-500 text-white rounded-full text-xs font-black flex items-center justify-center">
-                                    {pendingCount}
-                                </span>
+                            {item.id === 'applications' && (pendingCount > 0 || updatedCount > 0) && (
+                                <div className="ml-auto flex items-center gap-1">
+                                    {updatedCount > 0 && <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />}
+                                    <span className={`min-w-[22px] h-[22px] px-1.5 rounded-full text-xs font-black flex items-center justify-center ${updatedCount > 0 ? 'bg-blue-500 text-white' : 'bg-amber-500 text-white'}`}>
+                                        {pendingCount}
+                                    </span>
+                                </div>
                             )}
                             {activeTab === item.id && (
                                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-nepal-gold rounded-r-full" />
@@ -440,8 +446,8 @@ export default function AdminDashboard() {
                                     <div className="grid grid-cols-2 xl:grid-cols-4 gap-5">
                                         {[
                                             { label: 'Total Applications', value: applications.length, icon: FileText, color: 'text-blue-300', bg: 'bg-blue-500/10 border-blue-500/15' },
-                                            { label: 'Pending Review', value: pendingCount, icon: Clock, color: 'text-amber-300', bg: 'bg-amber-500/10 border-amber-500/15' },
-                                            { label: 'Total Queries', value: contacts.length, icon: MessageSquare, color: 'text-nepal-gold', bg: 'bg-nepal-gold/10 border-nepal-gold/15' },
+                                            { label: 'Ready for Review', value: pendingCount, icon: Clock, color: 'text-amber-300', bg: 'bg-amber-500/10 border-amber-500/15' },
+                                            { label: 'New Updates', value: updatedCount, icon: RefreshCw, color: 'text-blue-400', bg: 'bg-blue-400/10 border-blue-400/15' },
                                             { label: 'Unread Messages', value: unreadCount, icon: Inbox, color: 'text-rose-300', bg: 'bg-rose-500/10 border-rose-500/15' },
                                         ].map((stat, i) => (
                                             <motion.div
@@ -486,7 +492,11 @@ export default function AdminDashboard() {
                                             ) : (
                                                 <div className="divide-y divide-white/[0.04]">
                                                     {applications.slice(0, 5).map((app, i) => (
-                                                        <div key={i} className="flex items-center gap-4 px-6 py-5 hover:bg-white/[0.02] transition-colors">
+                                                        <div
+                                                            key={i}
+                                                            onClick={() => setSelectedItem(app)}
+                                                            className="flex items-center gap-4 px-6 py-5 hover:bg-white/[0.04] transition-colors cursor-pointer group/row"
+                                                        >
                                                             <div className="w-11 h-11 bg-nepal-navy/60 border border-white/10 rounded-xl flex items-center justify-center text-sm font-black text-nepal-gold shrink-0">
                                                                 {app.fullName?.split(' ').map((w: string) => w[0]).join('').slice(0, 2) ?? '??'}
                                                             </div>
@@ -590,7 +600,11 @@ export default function AdminDashboard() {
                                                 </thead>
                                                 <tbody className="divide-y divide-white/[0.04]">
                                                     {filteredApps.map((app, i) => (
-                                                        <tr key={i} className="hover:bg-white/[0.02] transition-colors group">
+                                                        <tr
+                                                            key={i}
+                                                            onClick={() => setSelectedItem(app)}
+                                                            className="hover:bg-white/[0.04] transition-colors group cursor-pointer"
+                                                        >
                                                             <td className="px-6 py-5">
                                                                 <span className="text-sm font-black text-nepal-gold font-mono">{app.refId}</span>
                                                             </td>
@@ -607,7 +621,16 @@ export default function AdminDashboard() {
                                                             </td>
                                                             <td className="px-6 py-5"><span className="text-white/60 text-sm font-bold">{app.nationality}</span></td>
                                                             <td className="px-6 py-5"><span className="text-white/60 text-sm font-bold">{app.visaLabel}</span></td>
-                                                            <td className="px-6 py-5"><StatusBadge status={app.status} /></td>
+                                                            <td className="px-6 py-5">
+                                                                <div className="flex items-center gap-3">
+                                                                    <StatusBadge status={app.status} />
+                                                                    {app.isNewUpdate && (
+                                                                        <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-[9px] font-black text-blue-400 animate-pulse">
+                                                                            <RefreshCw size={8} /> RE-UPLOAD
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                            </td>
                                                             <td className="px-6 py-5"><span className="text-white/40 text-sm font-bold">{fmtDate(app.submittedAt)}</span></td>
                                                             <td className="px-6 py-5">
                                                                 <button
@@ -645,7 +668,8 @@ export default function AdminDashboard() {
                                                     initial={{ opacity: 0, y: 18 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ delay: i * 0.05, duration: 0.38, ease: [0.25, 0.46, 0.45, 0.94] }}
-                                                    className="bg-[#0D1626] border border-white/[0.07] rounded-2xl p-6 hover:border-nepal-gold/25 transition-all"
+                                                    onClick={() => setSelectedItem(app)}
+                                                    className="bg-[#0D1626] border border-white/[0.07] rounded-2xl p-6 hover:border-nepal-gold/25 transition-all cursor-pointer group/card hover:bg-white/[0.02]"
                                                 >
                                                     <div className="flex items-start justify-between mb-6">
                                                         <div className="flex items-center gap-3.5">
@@ -1176,8 +1200,49 @@ export default function AdminDashboard() {
                                     <p className="text-white/40 text-base font-bold mt-0.5">{selectedItem.nationality} · {selectedItem.visaLabel}</p>
                                     <p className="text-nepal-gold font-black text-sm font-mono mt-1">{selectedItem.refId}</p>
                                 </div>
-                                <div className="ml-auto"><StatusBadge status={selectedItem.status} /></div>
+                                <div className="ml-auto flex flex-col items-end gap-2">
+                                    <StatusBadge status={selectedItem.status} />
+                                    {selectedItem.isNewUpdate && (
+                                        <button
+                                            onClick={async () => {
+                                                const res = await fetch('/api/applications', {
+                                                    method: 'PATCH',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({ refId: selectedItem.refId, isNewUpdate: false })
+                                                });
+                                                if (res.ok) {
+                                                    setSelectedItem((prev: any) => ({ ...prev, isNewUpdate: false, recentlyUpdatedDocs: [] }));
+                                                    setApplications(prev => prev.map(a => a.refId === selectedItem.refId ? { ...a, isNewUpdate: false, recentlyUpdatedDocs: [] } : a));
+                                                }
+                                            }}
+                                            className="px-3 py-1 bg-blue-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20"
+                                        >
+                                            ACKNOWLEDGE UPDATE
+                                        </button>
+                                    )}
+                                </div>
                             </div>
+                            {selectedItem.isNewUpdate && (
+                                <div className="mb-7 p-4 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center gap-4">
+                                    <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400 shrink-0 animate-pulse">
+                                        <RefreshCw size={18} />
+                                    </div>
+                                    <div>
+                                        <p className="text-white font-black text-sm tracking-tight">Re-Uploaded Documents Awaiting Review</p>
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            {selectedItem.recentlyUpdatedDocs && selectedItem.recentlyUpdatedDocs.length > 0 ? (
+                                                selectedItem.recentlyUpdatedDocs.map((doc: string, idx: number) => (
+                                                    <span key={idx} className="bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest border border-blue-500/30">
+                                                        {doc}
+                                                    </span>
+                                                ))
+                                            ) : (
+                                                <p className="text-blue-300/60 text-xs font-bold uppercase tracking-widest">Applicant has addressed the requested fixes</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                             <div className="grid grid-cols-2 gap-4 mb-7">
                                 {[
                                     { label: 'Email Address', value: selectedItem.email },
@@ -1192,65 +1257,147 @@ export default function AdminDashboard() {
                                 ))}
                             </div>
 
+                            {selectedItem.paymentStatus === 'Paid' && (
+                                <div className="mb-10 p-8 bg-emerald-500/5 border border-emerald-500/20 rounded-[2rem] relative overflow-hidden group/payinfo">
+                                    <div className="absolute top-0 right-0 p-8 opacity-[0.03] text-emerald-400 group-hover/payinfo:scale-110 transition-transform duration-1000">
+                                        <CheckCircle size={100} />
+                                    </div>
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
+                                            <ShieldCheck size={20} />
+                                        </div>
+                                        <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-400">Payment Verification Protocol</h4>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                                        <div>
+                                            <p className="text-[9px] font-black uppercase tracking-widest text-white/20 mb-1">Transaction ID</p>
+                                            <p className="text-white font-black text-xs font-mono">{selectedItem.receipt?.transactionId}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] font-black uppercase tracking-widest text-white/20 mb-1">Authorization Date</p>
+                                            <p className="text-white font-black text-xs">{fmtDate(selectedItem.paidAt)}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] font-black uppercase tracking-widest text-white/20 mb-1">Method</p>
+                                            <p className="text-white font-black text-xs">{selectedItem.receipt?.method}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] font-black uppercase tracking-widest text-white/20 mb-1">Amount</p>
+                                            <p className="text-emerald-400 font-black text-xs">${selectedItem.receipt?.amount} {selectedItem.receipt?.currency}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white/[0.03] rounded-xl p-4 border border-white/[0.05]">
+                                        <p className="text-[9px] font-black uppercase tracking-widest text-white/20 mb-2">Automated Notification Payload</p>
+                                        <p className="text-white/60 text-xs font-medium leading-relaxed italic">
+                                            "{selectedItem.issuanceTimeline}"
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="mb-12 space-y-5">
                                 <div className="flex items-center justify-between px-1">
-                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Protocol Dossier</p>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Visa Record</p>
                                     <p className="text-[10px] font-black uppercase tracking-widest text-nepal-gold/40">Verified Registry</p>
                                 </div>
                                 <div className="space-y-3 max-h-[340px] overflow-y-auto pr-3 custom-scrollbar">
                                     {selectedItem.documents && Object.keys(selectedItem.documents).length > 0 ? (
-                                        Object.entries(selectedItem.documents).map(([name, data], i) => (
-                                            <div key={i} className="flex items-center justify-between p-4 bg-white/[0.03] border border-white/[0.06] rounded-xl group/doc hover:bg-white/[0.05] transition-all">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="p-2.5 bg-nepal-gold/10 rounded-lg text-nepal-gold shadow-sm group-hover/doc:bg-nepal-gold group-hover/doc:text-nepal-navy transition-colors">
-                                                        <FileText size={16} />
-                                                    </div>
-                                                    <div>
-                                                        <span className="text-white/80 text-[13px] font-black block leading-none">{name}</span>
-                                                        <span className="text-[10px] uppercase font-bold text-white/20 tracking-wider">Verified Format</span>
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <button
-                                                        onClick={() => {
-                                                            const win = window.open();
-                                                            if (win) win.document.write(`<iframe src="${data}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
-                                                        }}
-                                                        className="px-4 py-2 bg-white/[0.05] border border-white/[0.1] rounded-lg text-[10px] font-black uppercase tracking-widest text-nepal-gold hover:bg-nepal-gold hover:text-nepal-navy transition-all"
-                                                    >
-                                                        Open Vault
-                                                    </button>
-                                                    <button
-                                                        onClick={async () => {
-                                                            const currentRejected = (selectedItem as Application).rejectedDocuments || [];
-                                                            const isAlreadyRejected = currentRejected.includes(name);
-                                                            const newList = isAlreadyRejected
-                                                                ? currentRejected.filter((n: string) => n !== name)
-                                                                : [...currentRejected, name];
+                                        Object.entries(selectedItem.documents).map(([name, data], i) => {
+                                            const isRecentUpdate = selectedItem.recentlyUpdatedDocs?.includes(name);
+                                            const isRejected = selectedItem.rejectedDocuments?.includes(name);
 
-                                                            const res = await fetch('/api/applications', {
-                                                                method: 'PATCH',
-                                                                headers: { 'Content-Type': 'application/json' },
-                                                                body: JSON.stringify({ refId: selectedItem.refId, rejectedDocuments: newList })
-                                                            });
-                                                            if (res.ok) {
-                                                                setSelectedItem((prev: any) => ({ ...prev, rejectedDocuments: newList }));
-                                                                setApplications(prev => prev.map(a => a.refId === selectedItem.refId ? { ...a, rejectedDocuments: newList } : a));
-                                                            }
-                                                        }}
-                                                        className={`p-2 rounded-lg border transition-all ${selectedItem.rejectedDocuments?.includes(name)
-                                                            ? 'bg-red-500 border-red-400 text-white'
-                                                            : 'bg-white/[0.05] border-white/10 text-white/30 hover:text-red-400 hover:border-red-400/50'}`}
-                                                        title={selectedItem.rejectedDocuments?.includes(name) ? "Marked as Invalid" : "Flag as Mismatch"}
-                                                    >
-                                                        <XCircle size={14} />
-                                                    </button>
+                                            return (
+                                                <div key={i} className={`flex items-center justify-between p-5 border rounded-2xl group/doc transition-all 
+                                                    ${isRejected ? 'bg-red-500/5 border-red-500/20 hover:bg-red-500/10' :
+                                                        isRecentUpdate ? 'bg-blue-500/5 border-blue-500/20 hover:bg-blue-500/10' :
+                                                            'bg-emerald-500/5 border-emerald-500/10 hover:bg-emerald-500/10'}`}>
+                                                    <div className="flex items-center gap-4">
+                                                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-sm transition-all 
+                                                            ${isRejected ? 'bg-red-500 text-white shadow-red-500/20' :
+                                                                isRecentUpdate ? 'bg-blue-500 text-white shadow-blue-500/20' :
+                                                                    'bg-emerald-500 text-white shadow-emerald-500/20'}`}>
+                                                            {isRejected ? <XCircle size={18} /> :
+                                                                isRecentUpdate ? <RefreshCw size={18} className="animate-spin-slow" /> :
+                                                                    <ShieldCheck size={18} />}
+                                                        </div>
+                                                        <div>
+                                                            <div className="flex items-center gap-2.5">
+                                                                <span className="text-white font-black text-sm block leading-none">{name}</span>
+                                                                {isRejected ? (
+                                                                    <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-[9px] font-black uppercase tracking-widest border border-red-400">Action Required</span>
+                                                                ) : isRecentUpdate ? (
+                                                                    <span className="px-2 py-0.5 rounded-full bg-blue-500 text-white text-[9px] font-black uppercase tracking-widest animate-pulse border border-blue-400 shadow-[0_0_12px_rgba(59,130,246,0.5)]">RE-UPLOADED</span>
+                                                                ) : (
+                                                                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[9px] font-black uppercase tracking-widest border border-emerald-500/20">Verified</span>
+                                                                )}
+                                                            </div>
+                                                            <div className="flex items-center gap-1.5 mt-1.5">
+                                                                <div className={`w-1 h-1 rounded-full ${isRejected ? 'bg-red-400' : isRecentUpdate ? 'bg-blue-400' : 'bg-emerald-400'}`} />
+                                                                <span className="text-[10px] uppercase font-bold text-white/30 tracking-wider">
+                                                                    {isRejected ? 'Flagged as Invalid Format' : isRecentUpdate ? 'New Version Awaiting Audit' : 'Previously Validated Asset'}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center gap-3">
+                                                        <button
+                                                            onClick={async () => {
+                                                                const win = window.open();
+                                                                if (win) win.document.write(`<iframe src="${data}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+
+                                                                // Auto-verify: mark as seen when opened
+                                                                if (isRecentUpdate) {
+                                                                    const newList = (selectedItem.recentlyUpdatedDocs || []).filter((n: string) => n !== name);
+                                                                    const res = await fetch('/api/applications', {
+                                                                        method: 'PATCH',
+                                                                        headers: { 'Content-Type': 'application/json' },
+                                                                        body: JSON.stringify({ refId: selectedItem.refId, recentlyUpdatedDocs: newList })
+                                                                    });
+                                                                    if (res.ok) {
+                                                                        setSelectedItem((prev: any) => ({ ...prev, recentlyUpdatedDocs: newList }));
+                                                                        setApplications(prev => prev.map(a => a.refId === selectedItem.refId ? { ...a, recentlyUpdatedDocs: newList } : a));
+                                                                    }
+                                                                }
+                                                            }}
+                                                            className={`px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${isRecentUpdate ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-white/5 border border-white/10 text-white/40 hover:bg-white/10 hover:text-white'}`}
+                                                        >
+                                                            Open Vault
+                                                        </button>
+
+                                                        <button
+                                                            onClick={async () => {
+                                                                const currentRejected = (selectedItem as Application).rejectedDocuments || [];
+                                                                const isAlreadyRejected = currentRejected.includes(name);
+                                                                const newList = isAlreadyRejected
+                                                                    ? currentRejected.filter((n: string) => n !== name)
+                                                                    : [...currentRejected, name];
+
+                                                                const res = await fetch('/api/applications', {
+                                                                    method: 'PATCH',
+                                                                    headers: { 'Content-Type': 'application/json' },
+                                                                    body: JSON.stringify({ refId: selectedItem.refId, rejectedDocuments: newList })
+                                                                });
+                                                                if (res.ok) {
+                                                                    setSelectedItem((prev: any) => ({ ...prev, rejectedDocuments: newList }));
+                                                                    setApplications(prev => prev.map(a => a.refId === selectedItem.refId ? { ...a, rejectedDocuments: newList } : a));
+                                                                }
+                                                            }}
+                                                            className={`p-2.5 rounded-xl border transition-all ${isRejected
+                                                                ? 'bg-red-500 border-red-400 text-white shadow-lg shadow-red-500/20'
+                                                                : 'bg-white/[0.05] border-white/10 text-white/30 hover:text-red-400 hover:border-red-400/50'}`}
+                                                            title={isRejected ? "Restore to Verified" : "Flag as Mismatch"}
+                                                        >
+                                                            {isRejected ? <ShieldCheck size={16} /> : <XCircle size={16} />}
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))
+                                            );
+                                        })
                                     ) : (
                                         <div className="p-6 bg-white/[0.02] border border-white/[0.05] border-dashed rounded-xl text-center">
-                                            <p className="text-xs font-bold text-white/20 uppercase tracking-widest italic">No digital records attached to dossier</p>
+                                            <p className="text-xs font-bold text-white/20 uppercase tracking-widest italic">No digital assets attached to record</p>
                                         </div>
                                     )}
                                 </div>
@@ -1325,6 +1472,12 @@ export default function AdminDashboard() {
                             </div>
 
                             <div className="flex flex-wrap lg:flex-nowrap gap-5 pb-6">
+                                <button
+                                    onClick={() => updateApplicationStatus(selectedItem.refId, 'Awaiting Payment')}
+                                    className="flex-1 py-6 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-amber-500 text-[11px] font-black uppercase tracking-widest hover:bg-amber-500/20 transition-all flex items-center justify-center gap-4 group"
+                                >
+                                    <Clock size={28} className="group-hover:scale-110 transition-transform" /> Verify Docs
+                                </button>
                                 <button
                                     onClick={() => updateApplicationStatus(selectedItem.refId, 'In Progress')}
                                     className="flex-1 py-6 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl text-indigo-400 text-[11px] font-black uppercase tracking-widest hover:bg-indigo-500/20 transition-all flex items-center justify-center gap-4 group"

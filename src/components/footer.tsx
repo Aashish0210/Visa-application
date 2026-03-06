@@ -28,29 +28,29 @@ const Footer = () => {
     const footerLinks = {
         quickLinks: [
             { name: 'Visa Types', href: '/info' },
-            { name: 'Requirement Checklist', href: '/requirements' },
+            { name: 'Document Checklist', href: '/requirements' },
             { name: 'Track Status', href: '/track' },
             { name: 'Book Appointment', href: '/appointments' },
             { name: 'FAQs', href: '/faq' },
         ],
         resources: [
-            { name: 'Policy Documentation', href: '#' },
+            { name: 'Rules', href: '#' },
             { name: 'Embassy Locations', href: '#' },
             { name: 'Download Forms', href: '#' },
             { name: 'News & Updates', href: '#' },
-            { name: 'Travel Info', href: '#' },
+            { name: 'Travel Help', href: '#' },
         ]
     };
 
     return (
-        <footer className="relative bg-[#020617] text-slate-400 pt-28 pb-12 overflow-hidden border-t border-white/5 font-outfit">
+        <footer className="relative bg-[#020617] text-slate-400 pt-16 lg:pt-28 pb-32 lg:pb-12 overflow-hidden border-t border-white/5 font-outfit">
 
             {/* Subtle Premium Accents */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-nepal-gold/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-nepal-gold/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16 mb-16 lg:mb-24">
 
                     {/* Brand Architecture */}
                     <div className="space-y-8">
@@ -64,8 +64,8 @@ const Footer = () => {
                                     <span className="text-nepal-gold font-black text-lg tracking-tighter uppercase">Nepal</span>
                                 </div>
                             </div>
-                            <p className="text-sm leading-relaxed font-medium text-slate-500 max-w-xs">
-                                The official digital infrastructure for the Department of Immigration, Nepal. Providing elite visa solutions for a global community.
+                            <p className="text-base leading-relaxed font-medium text-slate-500 max-w-xs">
+                                The official website for the Department of Immigration, Nepal. Providing visa services for everyone.
                             </p>
                         </Link>
 
@@ -83,9 +83,9 @@ const Footer = () => {
 
                         {/* LIVE Kathmandu Status */}
                         <div className="pt-4 flex flex-col gap-2">
-                            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-nepal-gold/60">
+                            <div className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.2em] text-nepal-gold/60">
                                 <Clock size={12} />
-                                Kathmandu Local Time
+                                Kathmandu Time
                             </div>
                             <div className="text-2xl font-black text-white tracking-widest font-mono tabular-nums opacity-90">
                                 {time || '00:00:00 AM'}
@@ -95,11 +95,11 @@ const Footer = () => {
 
                     {/* Navigation Columns */}
                     <div>
-                        <h4 className="text-white font-black text-sm uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
+                        <h4 className="text-white font-black text-base uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
                             <span className="w-4 h-[2px] bg-nepal-gold" />
-                            Quick Links
+                            Links
                         </h4>
-                        <ul className="space-y-4 text-sm font-bold">
+                        <ul className="space-y-4 text-base font-bold">
                             {footerLinks.quickLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link href={link.href} className="group flex items-center gap-2 hover:text-white transition-all duration-300">
@@ -112,11 +112,11 @@ const Footer = () => {
                     </div>
 
                     <div>
-                        <h4 className="text-white font-black text-sm uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
+                        <h4 className="text-white font-black text-base uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
                             <span className="w-4 h-[2px] bg-nepal-gold" />
                             Resources
                         </h4>
-                        <ul className="space-y-4 text-sm font-bold">
+                        <ul className="space-y-4 text-base font-bold">
                             {footerLinks.resources.map((link) => (
                                 <li key={link.name}>
                                     <Link href={link.href} className="group flex items-center gap-2 hover:text-white transition-all duration-300">
@@ -130,17 +130,17 @@ const Footer = () => {
 
                     {/* Elite Contact Info */}
                     <div>
-                        <h4 className="text-white font-black text-sm uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
+                        <h4 className="text-white font-black text-base uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
                             <span className="w-4 h-[2px] bg-nepal-gold" />
-                            Headquarters
+                            Our Office
                         </h4>
-                        <ul className="space-y-6 text-sm">
+                        <ul className="space-y-6 text-base">
                             <li className="flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-nepal-gold/20 transition-colors">
                                 <div className="w-8 h-8 rounded-lg bg-nepal-gold/10 flex items-center justify-center shrink-0">
                                     <MapPin size={18} className="text-nepal-gold" />
                                 </div>
                                 <div className="flex flex-col gap-1">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Address</span>
+                                    <span className="text-sm font-black uppercase tracking-widest text-slate-500">Address</span>
                                     <span className="text-white font-bold leading-tight">Kalikasthan, Kathmandu, Nepal</span>
                                 </div>
                             </li>
@@ -160,17 +160,17 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-[11px] font-black uppercase tracking-widest">
+                <div className="border-t border-white/5 pt-8 lg:pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-sm font-black uppercase tracking-widest">
                     <div className="flex items-center gap-4 text-slate-500">
                         <p>© {new Date().getFullYear()} Dept. of Immigration, Nepal</p>
                         <span className="w-1 h-1 rounded-full bg-slate-800" />
                         <span className="flex items-center gap-1.5 transition-colors hover:text-nepal-gold cursor-pointer">
                             <Activity size={12} className="text-emerald-500" />
-                            System Status: Operational
+                            System: Active
                         </span>
                     </div>
 
-                    <div className="flex items-center gap-8">
+                    <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-8">
                         <Link href="#" className="text-slate-500 hover:text-white transition-colors">Privacy Policy</Link>
                         <Link href="#" className="text-slate-500 hover:text-white transition-colors">Terms of Service</Link>
                         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/5 text-white/60">

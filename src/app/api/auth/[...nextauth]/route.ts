@@ -11,6 +11,7 @@ const handler = NextAuth({
     pages: {
         signIn: "/", // Redirect back to homepage since login is built in RootLayout
     },
+    secret: process.env.NEXTAUTH_SECRET || "fallback_development_secret_string",
     callbacks: {
         async jwt({ token, user, account }) {
             if (account && user) {

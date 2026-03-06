@@ -20,6 +20,7 @@ export const UserAuthGuard = ({ children }: UserAuthGuardProps) => {
     const { data: session, status } = useSession();
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [mounted, setMounted] = useState(false);
     const [authMode, setAuthMode] = useState<'selection' | 'manual' | 'google'>('selection');
     const [manualType, setManualType] = useState<'login' | 'signup'>('login');
 
@@ -35,6 +36,7 @@ export const UserAuthGuard = ({ children }: UserAuthGuardProps) => {
     const [error, setError] = useState('');
 
     useEffect(() => {
+        setMounted(true);
         const checkAuth = () => {
             const localSession = localStorage.getItem(USER_SESSION_KEY);
             if (session?.user) {
@@ -45,7 +47,6 @@ export const UserAuthGuard = ({ children }: UserAuthGuardProps) => {
                     authMethod: 'google'
                 };
                 setUser(sessionUser);
-                // Sync session to local storage for backward compatibility
                 localStorage.setItem(USER_SESSION_KEY, JSON.stringify(sessionUser));
             } else if (localSession) {
                 setUser(JSON.parse(localSession));
@@ -124,10 +125,11 @@ export const UserAuthGuard = ({ children }: UserAuthGuardProps) => {
 
     const handleGoogleLogin = async () => {
         setAuthMode('google');
-        await signIn('google', { callbackUrl: '/' });
+        await signIn('google', { callbackUrl: window.location.href });
     };
 
-    if (loading) {
+    // Hydration fix: return a consistent loading state until mounted
+    if (!mounted || loading) {
         return (
             <div className="min-h-screen bg-[#020617] flex items-center justify-center">
                 <div className="relative">

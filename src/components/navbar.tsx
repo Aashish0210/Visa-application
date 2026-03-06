@@ -11,9 +11,14 @@ const Navbar = () => {
     const { data: session, status } = useSession();
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [visible, setVisible] = useState(true);
+    const lastScrollY = React.useRef(0);
     const [user, setUser] = useState<any>(null);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [hasNotifications, setHasNotifications] = useState(false);
+
+    const profileRef = React.useRef<HTMLDivElement>(null);
+    const mobileMenuRef = React.useRef<HTMLDivElement>(null);
     const pathname = usePathname();
     const isHome = pathname === '/';
 
@@ -27,8 +32,13 @@ const Navbar = () => {
     });
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', handleScroll);
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            setScrolled(currentScrollY > 20);
+
+            setVisible(true);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         const checkAuth = async () => {
             const localSession = localStorage.getItem('pf_user_session');
@@ -67,6 +77,24 @@ const Navbar = () => {
         };
 
         checkAuth();
+
+        // Click Outside Handler
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Node;
+            if (profileRef.current && !profileRef.current.contains(target)) {
+                setIsProfileOpen(false);
+            }
+            if (mobileMenuRef.current && !mobileMenuRef.current.contains(target)) {
+                // If it's a mobile menu, we might want to check if they clicked the hamburger button too
+                // But generally, any click outside should close it if it's open
+                // setIsOpen(false); // Only close if it's the mobile menu being clicked outside
+            }
+        };
+
+        // We also want a global close for "blank space"
+        // If the user clicks on the main document (not on any interactive element that should keep it open)
+        document.addEventListener('mousedown', handleClickOutside);
+
         // Check periodically or on focus/event
         window.addEventListener('storage', checkAuth);
         window.addEventListener('focus', checkAuth);
@@ -74,6 +102,7 @@ const Navbar = () => {
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
+            document.removeEventListener('mousedown', handleClickOutside);
             window.removeEventListener('storage', checkAuth);
             window.removeEventListener('focus', checkAuth);
             window.removeEventListener('auth-change', checkAuth);
@@ -88,17 +117,20 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', href: '/' },
-        { name: 'Visa Information', href: '/info' },
+        { name: 'Visa Info', href: '/info' },
         { name: 'Requirements', href: '/requirements' },
-        { name: 'Track Application', href: '/track' },
-        { name: 'Contact Us', href: '/contact' },
+        { name: 'Track Status', href: '/track' },
+        { name: 'Contact', href: '/contact' },
     ];
 
     return (
-        <header
+        <motion.header
+            initial={{ y: 0 }}
+            animate={{ y: visible ? 0 : -120 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className={`fixed w-full z-[100] top-0 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isSolid
-                ? 'py-4 bg-white/80 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-b border-white/20'
-                : 'py-6 bg-transparent border-b border-transparent'
+                ? 'py-3 lg:py-4 bg-white/80 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-b border-white/20'
+                : 'py-5 lg:py-6 bg-transparent border-b border-transparent'
                 }`}
         >
             {/* Scroll Progress Bar */}
@@ -107,158 +139,135 @@ const Navbar = () => {
                 style={{ scaleX }}
             />
 
-            <div className="container mx-auto px-6 flex justify-between items-center relative">
+            <div className="max-w-[1400px] mx-auto px-8 flex justify-between items-center relative h-full">
 
                 {/* ── LIVE Brand Identity ── */}
-                <Link href="/" className="flex flex-col items-center leading-none shrink-0 group py-1 relative mr-8 lg:mr-16">
-                    <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-8 bg-nepal-gold opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-full" />
+                <Link href="/" className="flex flex-col items-start leading-none shrink-0 group py-1 relative">
                     <div className="flex items-center gap-1.5">
-                        <span className="text-2xl md:text-3xl font-black text-nepal-gold tracking-tighter uppercase transition-transform group-hover:scale-[1.02]">
+                        <span className="text-xl md:text-3xl font-black text-nepal-gold tracking-tighter uppercase">
                             Pathfinder
                         </span>
-                        <span className={`text-2xl md:text-3xl font-black tracking-tighter uppercase transition-colors duration-500 group-hover:scale-[1.02] delay-75 ${isSolid ? 'text-nepal-navy' : 'text-white'}`}>
+                        <span className={`text-xl md:text-3xl font-black tracking-tighter uppercase transition-colors duration-500 ${isSolid ? 'text-nepal-navy' : 'text-white'}`}>
                             Nepal
                         </span>
                     </div>
-                    <div className="mt-1 w-full flex justify-center">
-                        <span className={`text-[9px] md:text-[10px] font-black tracking-[0.45em] uppercase whitespace-nowrap group-hover:text-nepal-gold transition-colors duration-500 ${isSolid ? 'text-nepal-navy/40' : 'text-white/60'}`}>
-                            Visa Solutions
+                    <div className="mt-0.5 lg:mt-1">
+                        <span className={`text-[9px] lg:text-[11px] font-black tracking-[0.3em] lg:tracking-[0.45em] uppercase transition-colors duration-500 ${isSolid ? 'text-nepal-navy/40' : 'text-white/60'}`}>
+                            Your Trip Starts Here
                         </span>
                     </div>
                 </Link>
 
-                {/* ── Desktop Nav Architecture ── */}
-                <div className="hidden lg:flex items-center gap-12">
-                    <nav className="flex items-center gap-10">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className={`relative font-bold text-[13px] uppercase tracking-widest hover:text-nepal-gold transition-all duration-300 group whitespace-nowrap ${isSolid ? 'text-nepal-navy' : 'text-white/90'}`}
+                <nav className="hidden lg:flex items-center gap-9">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                            className={`relative font-black text-[13px] uppercase tracking-[0.25em] transition-all duration-300 group whitespace-nowrap ${isSolid ? 'text-nepal-navy/70 hover:text-nepal-gold' : 'text-white/80 hover:text-white'}`}
+                        >
+                            {link.name}
+                            <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-nepal-gold group-hover:w-full transition-all duration-500" />
+                        </Link>
+                    ))}
+                </nav>
+
+                <div className="hidden lg:flex items-center gap-4">
+                    {user ? (
+                        <div className="relative" ref={profileRef}>
+                            <motion.button
+                                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                className={`flex items-center gap-3 pl-1 pr-3 py-1 rounded-full border transition-all duration-500
+                                        ${isSolid
+                                        ? 'bg-slate-50 border-slate-200 shadow-sm hover:border-nepal-gold/50'
+                                        : 'bg-white/5 border-white/10 hover:border-white/30'}`}
                             >
-                                {link.name}
-                                <span className="absolute -bottom-1 left-0 h-[3px] w-0 bg-nepal-gold rounded-full group-hover:w-full transition-all duration-500 ease-out" />
-                            </Link>
-                        ))}
-                    </nav>
-
-                    <div className="flex items-center gap-5 border-l border-slate-200/60 pl-8">
-
-
-                        <button className={`flex items-center gap-1 transition-all group ${isSolid ? 'text-slate-400 hover:text-nepal-navy' : 'text-white/60 hover:text-white'}`}>
-                            <Globe size={16} className="group-hover:rotate-[15deg] transition-transform" />
-                            <span className="text-[11px] font-black uppercase tracking-widest">EN</span>
-                            <ChevronDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
-                        </button>
-
-                        {user ? (
-                            <div className="relative">
-                                {/* Notifications integrated into profile */}
-                                <button
-                                    onClick={() => setIsProfileOpen(!isProfileOpen)}
-                                    className={`flex items-center gap-3 p-1.5 pr-4 rounded-full border transition-all duration-300
-                                            ${isSolid ? 'bg-slate-50 border-slate-100 hover:border-nepal-gold/30' : 'bg-white/5 border-white/10 hover:border-white/25'}`}
-                                >
-                                    <div className="relative shrink-0">
-                                        <div className="w-9 h-9 rounded-full bg-nepal-gold flex items-center justify-center text-nepal-navy font-black text-sm shadow-lg shadow-nepal-gold/20 overflow-hidden border-2 border-white/50">
-                                            {user.avatar ? (
-                                                <img src={user.avatar} alt="" className="w-full h-full object-cover" />
-                                            ) : (
-                                                user.name?.charAt(0) || <User size={16} />
-                                            )}
-                                        </div>
-                                        {hasNotifications && (
-                                            <div className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg animate-pulse z-10">
-                                                <Bell size={10} className="text-white fill-current" />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="flex flex-col items-start">
-                                        <span className={`text-[10px] font-black uppercase tracking-widest ${isSolid ? 'text-nepal-navy' : 'text-white'}`}>
-                                            {user.name?.split(' ')[0]}
-                                        </span>
-                                    </div>
-                                    <ChevronDown size={12} className={`transition-transform duration-300 ${isProfileOpen ? 'rotate-180' : ''} ${isSolid ? 'text-slate-400' : 'text-white/40'}`} />
-                                </button>
-
-                                <AnimatePresence>
-                                    {isProfileOpen && (
-                                        <>
-                                            <div className="fixed inset-0 bg-transparent z-[100]" onClick={() => setIsProfileOpen(false)} />
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                className="absolute right-0 mt-3 w-64 bg-white rounded-[1.5rem] shadow-[0_40px_80px_rgba(0,0,0,0.15)] border border-slate-100 p-2 overflow-hidden z-[101]"
-                                            >
-                                                <div className="p-4 bg-slate-50/50 rounded-2xl mb-2">
-                                                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Authenticated Account</p>
-                                                    <p className="text-sm font-black text-nepal-navy truncate">{user.name}</p>
-                                                    <p className="text-[10px] font-bold text-slate-400 truncate">{user.email}</p>
-                                                </div>
-
-                                                <div className="space-y-1">
-                                                    <Link href="/my-applications" className="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-colors group">
-                                                        <div className="flex items-center gap-3">
-                                                            <LayoutDashboard size={16} className="group-hover:text-nepal-gold transition-colors" />
-                                                            <span className="text-xs font-bold">My Applications</span>
-                                                        </div>
-                                                        {hasNotifications && (
-                                                            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                                                        )}
-                                                    </Link>
-                                                    <Link href="/profile" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-colors group">
-                                                        <Settings size={16} className="group-hover:text-nepal-gold transition-colors" />
-                                                        <span className="text-xs font-bold">Account Settings</span>
-                                                    </Link>
-                                                    <div className="h-px bg-slate-100 my-1 mx-2" />
-                                                    <button
-                                                        onClick={handleLogout}
-                                                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 text-rose-500 transition-colors group"
-                                                    >
-                                                        <LogOut size={16} />
-                                                        <span className="text-xs font-bold uppercase tracking-widest">Sign Out</span>
-                                                    </button>
-                                                </div>
-                                            </motion.div>
-                                        </>
+                                <div className="w-8 h-8 rounded-full bg-nepal-gold flex items-center justify-center text-nepal-navy font-black text-[10px] shadow-lg border border-white/20">
+                                    {user.avatar ? (
+                                        <img src={user.avatar} alt="" className="w-full h-full object-cover rounded-full" />
+                                    ) : (
+                                        user.name?.charAt(0).toUpperCase()
                                     )}
-                                </AnimatePresence>
-                            </div>
-                        ) : (
-                            <Link
-                                href="/apply"
-                                className="relative overflow-hidden bg-nepal-navy text-white px-7 py-3 rounded-xl font-black text-[12px] uppercase tracking-widest
-                                           hover:bg-nepal-gold hover:text-nepal-navy transition-all duration-500 shadow-xl hover:shadow-nepal-gold/20 active:scale-95 group"
-                            >
-                                <span className="relative z-10">Get Started</span>
-                                <div className="absolute inset-0 bg-white/20 translate-x-[-101%] group-hover:translate-x-[101%] transition-transform duration-700" />
-                            </Link>
-                        )}
-                    </div>
+                                </div>
+                                <span className={`text-[11px] font-black uppercase tracking-[0.1em] ${isSolid ? 'text-nepal-navy' : 'text-white'}`}>
+                                    {user.name?.split(' ')[0]}
+                                </span>
+                                <ChevronDown size={12} className={`transition-transform duration-500 ${isProfileOpen ? 'rotate-180' : ''} ${isSolid ? 'text-slate-400' : 'text-white/40'}`} />
+                            </motion.button>
+
+                            <AnimatePresence>
+                                {isProfileOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                                        className="absolute right-0 mt-3 w-72 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-slate-100 overflow-hidden z-[101]"
+                                    >
+                                        <div className="p-5 bg-slate-50/50 border-b border-slate-100">
+                                            <p className="text-[9px] font-black text-nepal-gold uppercase tracking-[0.2em] mb-1">Authenticated User</p>
+                                            <p className="text-sm font-black text-nepal-navy truncate mb-0.5">{user.name}</p>
+                                            <p className="text-[11px] font-medium text-slate-400 truncate tracking-tight">{user.email}</p>
+                                        </div>
+
+                                        <div className="p-2">
+                                            <Link href="/my-applications" className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                                                <div className="flex items-center gap-3">
+                                                    <LayoutDashboard size={14} className="text-slate-400 group-hover:text-nepal-gold transition-colors" />
+                                                    <span className="text-[11px] font-black text-nepal-navy/70 uppercase tracking-widest group-hover:text-nepal-navy">My Applications</span>
+                                                </div>
+                                                {hasNotifications && (
+                                                    <div className="w-1.5 h-1.5 bg-red-500 rounded-full shadow-lg shadow-red-500/30" />
+                                                )}
+                                            </Link>
+                                            <Link href="/profile" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                                                <Settings size={14} className="text-slate-400 group-hover:text-nepal-gold transition-colors" />
+                                                <span className="text-[11px] font-black text-nepal-navy/70 uppercase tracking-widest group-hover:text-nepal-navy">Profile Settings</span>
+                                            </Link>
+                                            <div className="h-px bg-slate-100 my-1 mx-2" />
+                                            <button
+                                                onClick={handleLogout}
+                                                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 text-red-500 transition-colors group"
+                                            >
+                                                <LogOut size={14} />
+                                                <span className="text-[11px] font-black uppercase tracking-widest">Terminate Session</span>
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    ) : (
+                        <Link
+                            href="/apply"
+                            className="hidden lg:inline-block bg-nepal-navy text-white px-8 py-3.5 rounded-full font-black text-[12px] uppercase tracking-[0.25em] shadow-xl shadow-nepal-navy/10 hover:bg-nepal-gold hover:text-nepal-navy transition-all duration-500"
+                        >
+                            Start Journey
+                        </Link>
+                    )}
                 </div>
 
-                {/* ── Mobile Orchestration ── */}
-                <button
-                    className="lg:hidden w-12 h-12 flex items-center justify-center rounded-xl bg-slate-50 text-nepal-navy hover:bg-nepal-snow transition-all border border-slate-200 shadow-sm overflow-hidden group"
-                    onClick={() => setIsOpen(!isOpen)}
-                    aria-label="Toggle menu"
-                >
-                    <div className="relative w-6 h-6">
-                        <motion.span
-                            animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 0 : -6 }}
-                            className="absolute inset-x-0 top-1/2 h-[2px] bg-current rounded-full"
-                        />
-                        <motion.span
-                            animate={{ opacity: isOpen ? 0 : 1 }}
-                            className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[2px] bg-current rounded-full"
-                        />
-                        <motion.span
-                            animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? 0 : 6 }}
-                            className="absolute inset-x-0 top-1/2 h-[2px] bg-current rounded-full"
-                        />
-                    </div>
-                </button>
+                {/* ── Mobile Orchestration (Hidden as requested) ── */}
+                <div className="hidden items-center gap-3" ref={mobileMenuRef}>
+                    <button
+                        className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all border shadow-sm overflow-hidden group ${isSolid ? 'bg-slate-50 text-nepal-navy border-slate-200' : 'bg-white/10 text-white border-white/10'}`}
+                        onClick={() => setIsOpen(!isOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        <div className="relative w-5 h-5">
+                            <motion.span
+                                animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 0 : -5 }}
+                                className="absolute inset-x-0 top-1/2 h-[1.5px] bg-current rounded-full"
+                            />
+                            <motion.span
+                                animate={{ opacity: isOpen ? 0 : 1 }}
+                                className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1.5px] bg-current rounded-full"
+                            />
+                            <motion.span
+                                animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? 0 : 5 }}
+                                className="absolute inset-x-0 top-1/2 h-[1.5px] bg-current rounded-full"
+                            />
+                        </div>
+                    </button>
+                </div>
             </div>
 
             {/* ── Mobile Glass Menu ── */}
@@ -294,14 +303,9 @@ const Navbar = () => {
                             <div className="h-px bg-slate-100 w-full" />
 
                             <div className="flex flex-col gap-4">
-                                <div className="flex items-center justify-between text-slate-400">
-                                    <div className="flex items-center gap-2">
-                                        <Activity size={18} className="text-emerald-500" />
-                                        <span className="text-xs font-black uppercase tracking-widest">Portal Status: Online</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 font-black text-[10px] uppercase tracking-widest">
-                                        <Globe size={14} /> English
-                                    </div>
+                                <div className="flex items-center gap-2">
+                                    <Activity size={18} className="text-emerald-500" />
+                                    <span className="text-xs font-black uppercase tracking-widest">System: Active</span>
                                 </div>
                                 {user ? (
                                     <div className="flex flex-col gap-4">
@@ -315,7 +319,7 @@ const Navbar = () => {
                                                     <LayoutDashboard size={20} />
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tracking</span>
+                                                    <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Status</span>
                                                     <span className="text-sm font-black text-nepal-navy">My Applications</span>
                                                 </div>
                                             </Link>
@@ -328,8 +332,8 @@ const Navbar = () => {
                                                     <Settings size={20} />
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Identity</span>
-                                                    <span className="text-sm font-black text-nepal-navy">Account Settings</span>
+                                                    <span className="text-xs font-black text-slate-400 uppercase tracking-widest">User</span>
+                                                    <span className="text-sm font-black text-nepal-navy">Profile Settings</span>
                                                 </div>
                                             </Link>
                                         </div>
@@ -337,7 +341,7 @@ const Navbar = () => {
                                             onClick={handleLogout}
                                             className="bg-red-50 text-red-600 py-4 rounded-xl font-black text-center uppercase tracking-widest flex items-center justify-center gap-3 active:scale-95 transition-transform"
                                         >
-                                            <LogOut size={18} /> Exit Portal
+                                            <LogOut size={18} /> Logout
                                         </button>
                                     </div>
                                 ) : (
@@ -354,7 +358,7 @@ const Navbar = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </header>
+        </motion.header >
     );
 };
 
