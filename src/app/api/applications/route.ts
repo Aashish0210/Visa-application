@@ -70,6 +70,7 @@ export async function POST(req: NextRequest) {
             study: 'Study Visa',
             residential: 'Residential Visa',
             tourist: 'Tourist Visa',
+            business: 'Business Visa',
         };
 
         const newApp = {

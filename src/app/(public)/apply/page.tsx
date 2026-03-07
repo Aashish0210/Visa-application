@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     User, MapPin, FileUp, CreditCard, CheckCircle, ChevronRight, ChevronLeft,
     ShieldAlert, Fingerprint, Zap, ShieldCheck, Download, Loader2, AlertTriangle, Copy,
-    Mail, Globe, Hash, Shield, Briefcase, GraduationCap, Home, Plane, Layers, Clock, Lock
+    Mail, Globe, Hash, Shield, Briefcase, GraduationCap, Home, Plane, Layers, Clock, Lock, Building2
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,7 +20,7 @@ const FlightPathSVG = ({ viewBox = '0 0 1440 520', paths }: any) => (
 );
 
 const VISA_FEES: Record<string, string> = {
-    Working: '$140.00', Study: '$60.00', Residential: '$750.00', Tourist: '$30.00',
+    Working: '$140.00', Study: '$60.00', Residential: '$750.00', Tourist: '$30.00', Business: '$180.00',
 };
 const DURATIONS: Record<string, string> = {
     '6_months': 'Interim (6 Months)', '1_year': 'Standard (1 Year)', '5_years': 'Residential (5 Years)',
@@ -384,12 +384,13 @@ const ApplyPage = () => {
                                                     <Layers className="text-nepal-gold" size={14} strokeWidth={2.5} />
                                                     <label className="text-sm font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Visa Type</label>
                                                 </div>
-                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                                     {[
                                                         { name: 'Working', icon: Briefcase },
                                                         { name: 'Study', icon: GraduationCap },
                                                         { name: 'Residential', icon: Home },
                                                         { name: 'Tourist', icon: Plane },
+                                                        { name: 'Business', icon: Building2 },
                                                     ].map((v) => (
                                                         <button
                                                             key={v.name}

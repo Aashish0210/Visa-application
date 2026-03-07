@@ -141,7 +141,7 @@ const Hero = () => {
 
     return (
         <section
-            className="relative min-h-screen flex items-center overflow-hidden bg-slate-950"
+            className="relative min-h-screen flex items-center overflow-hidden bg-slate-950 font-outfit"
         >
 
             {/* ════════════════════════════════════════
@@ -201,7 +201,7 @@ const Hero = () => {
                 {/* CONTENT OVERLAY — text & primary CTAs */}
                 <div className="relative z-[15] h-full pointer-events-none">
                     <div className="container mx-auto px-6 h-full flex flex-col justify-center">
-                        <div className="max-w-4xl space-y-12 lg:space-y-12 pt-8 lg:pt-20">
+                        <div className="max-w-4xl space-y-6 lg:space-y-12 pt-4 md:pt-8 lg:pt-20">
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={current}
@@ -212,14 +212,14 @@ const Hero = () => {
                                     className="space-y-4"
                                 >
 
-                                    <h1 className="text-3xl md:text-6xl lg:text-8xl font-black text-white leading-[0.9] tracking-tighter drop-shadow-2xl">
+                                    <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-white leading-[0.9] tracking-tighter drop-shadow-2xl">
                                         {heroSlides[current].headline}
-                                        <span className="block text-nepal-gold mt-2 uppercase italic text-2xl md:text-5xl lg:text-7xl">{heroSlides[current].accent}</span>
+                                        <span className="block text-nepal-gold mt-2 uppercase italic text-3xl md:text-5xl lg:text-7xl">{heroSlides[current].accent}</span>
                                     </h1>
                                 </motion.div>
                             </AnimatePresence>
 
-                            <div className="flex flex-col md:flex-row flex-wrap gap-5 pt-12 md:pt-6 pointer-events-auto">
+                            <div className="flex flex-col md:flex-row flex-wrap gap-5 pt-8 md:pt-6 pointer-events-auto">
                                 <Link
                                     href="/apply"
                                     className="bg-nepal-gold text-nepal-navy px-8 lg:px-10 py-4 lg:py-5 rounded-xl font-black text-sm lg:text-base uppercase tracking-widest hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_20px_40px_-10px_rgba(212,160,23,0.4)] flex items-center justify-center md:justify-start gap-3 active:scale-95 group w-full md:w-auto"
@@ -236,7 +236,7 @@ const Hero = () => {
                                 </Link>
                             </div>
 
-                            <div className="flex items-center gap-8 pt-12 lg:pt-12 border-t border-white/10 max-w-lg">
+                            <div className="flex items-center gap-6 sm:gap-8 pt-6 sm:pt-8 lg:pt-12 border-t border-white/10 max-w-lg mt-8 lg:mt-0">
                                 <div className="flex flex-col">
                                     <span className="text-white/40 text-sm font-bold uppercase tracking-widest mb-1">Processing Time</span>
                                     <span className="text-white text-xl font-black tracking-tight">72 Hours <span className="text-nepal-gold">*</span></span>

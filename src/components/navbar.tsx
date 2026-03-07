@@ -152,8 +152,8 @@ const Navbar = () => {
                         </span>
                     </div>
                     <div className="mt-0.5 lg:mt-1">
-                        <span className={`text-[9px] lg:text-[11px] font-black tracking-[0.3em] lg:tracking-[0.45em] uppercase transition-colors duration-500 ${isSolid ? 'text-nepal-navy/40' : 'text-white/60'}`}>
-                            Your Trip Starts Here
+                        <span className={`text-[8px] lg:text-[11px] font-black tracking-[0.2em] lg:tracking-[0.45em] uppercase transition-colors duration-500 ${isSolid ? 'text-nepal-navy/40' : 'text-white/60'}`}>
+                            Your path to nepal begins with us
                         </span>
                     </div>
                 </Link>
