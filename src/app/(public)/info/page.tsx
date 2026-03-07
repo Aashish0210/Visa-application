@@ -31,6 +31,19 @@ const InfoPage = () => {
             load: "Normal"
         },
         {
+            title: "Business Visa",
+            subtitle: "Trade & Investment",
+            icon: Zap,
+            accent: "bg-amber-600",
+            description: "For foreign nationals entering Nepal to conduct business, trade, or investment activities. Requires appropriate recommendation letters from relevant authorities.",
+            details: [
+                { label: "Duration", value: "Project Based" },
+                { label: "Fee", value: "$30 – $300 / duration" },
+                { label: "Time", value: "3-7 Days" }
+            ],
+            load: "Optimized"
+        },
+        {
             title: "Study Visa",
             subtitle: "Academic & Research",
             icon: BookOpen,
@@ -42,19 +55,6 @@ const InfoPage = () => {
                 { label: "Time", value: "7-10 Days" }
             ],
             load: "Quick"
-        },
-        {
-            title: "Residential Visa",
-            subtitle: "Long-term Stay",
-            icon: ShieldCheck,
-            accent: "bg-emerald-600",
-            description: "For investors, retirees, and long-term residents. Ideal for those seeking to stay long term and make high-level investments.",
-            details: [
-                { label: "Duration", value: "5 Years Multi" },
-                { label: "Fee", value: "$500 – $1000 / yr" },
-                { label: "Time", value: "20-30 Days" }
-            ],
-            load: "Premium"
         },
         {
             title: "Tourist Visa",

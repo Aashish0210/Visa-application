@@ -142,7 +142,7 @@ const Navbar = () => {
             <div className="max-w-[1400px] mx-auto px-8 flex justify-between items-center relative h-full">
 
                 {/* ── LIVE Brand Identity ── */}
-                <Link href="/" className="flex flex-col items-start leading-none shrink-0 group py-1 relative">
+                <Link href="/" className="flex flex-col items-center leading-none shrink-0 group py-1 relative">
                     <div className="flex items-center gap-1.5">
                         <span className="text-xl md:text-3xl font-black text-nepal-gold tracking-tighter uppercase">
                             Pathfinder
@@ -151,9 +151,9 @@ const Navbar = () => {
                             Nepal
                         </span>
                     </div>
-                    <div className="mt-0.5 lg:mt-1">
-                        <span className={`text-[8px] lg:text-[11px] font-black tracking-[0.2em] lg:tracking-[0.45em] uppercase transition-colors duration-500 ${isSolid ? 'text-nepal-navy/40' : 'text-white/60'}`}>
-                            Your path to nepal begins with us
+                    <div className="mt-1 lg:mt-2">
+                        <span className={`text-[12px] lg:text-[18px] font-black tracking-[0.2em] lg:tracking-[0.45em] uppercase transition-colors duration-500 ${isSolid ? 'text-nepal-navy/40' : 'text-white/60'}`}>
+                            Visa Solution
                         </span>
                     </div>
                 </Link>

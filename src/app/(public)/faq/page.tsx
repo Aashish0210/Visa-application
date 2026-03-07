@@ -32,11 +32,11 @@ const FAQPage = () => {
     const faqs = [
         {
             q: "Can I apply for a long-term visa before arriving in Nepal?",
-            a: "Yes, this portal is specifically designed for foreign nationals to apply for long-term visas (Working, Study, Residential) before they travel to Nepal. Once approved, you will receive a grant letter to present upon entry."
+            a: "Yes, this portal is specifically designed for foreign nationals to apply for long-term visas (Working, Business, Study) before they travel to Nepal. Once approved, you will receive a grant letter to present upon entry."
         },
         {
             q: "How long does the visa approval process take?",
-            a: "The processing time depends on the visa category. Generally, Working and Study visas take 7-15 business days, while Residential visas may take up to 30 business days for complete verification."
+            a: "The processing time depends on the visa category. Generally, Working, Business, and Study visas take 7-15 business days. Tourist visas are processed much faster, often within 1-5 business days."
         },
         {
             q: "What documents are required for a Work Visa?",

@@ -125,8 +125,8 @@ const ProfilePage = () => {
 
     return (
         <UserAuthGuard>
-            <main className="min-h-screen bg-[#F8FAFC] font-outfit pt-24 md:pt-32 pb-36 overflow-x-hidden w-full">
-                <div className="container mx-auto px-5 md:px-8 max-w-full md:max-w-4xl w-full">
+            <main className="min-h-screen bg-[#F8FAFC] font-outfit pt-24 md:pt-32 pb-40 lg:pb-36 overflow-x-hidden w-full">
+                <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-full md:max-w-4xl w-full">
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-5 md:gap-8 mb-10 md:mb-12 text-center md:text-left w-full">
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -152,7 +152,7 @@ const ProfilePage = () => {
                         </motion.div>
 
                         <div className="space-y-1 md:space-y-2 mt-2 md:mt-6 flex flex-col items-center md:items-start w-full">
-                            <h1 className="text-xl sm:text-2xl md:text-5xl font-black text-nepal-navy tracking-tight uppercase truncate max-w-[240px] sm:max-w-[280px] md:max-w-none">
+                            <h1 className="text-xl sm:text-2xl md:text-5xl font-black text-nepal-navy tracking-tight uppercase truncate max-w-[180px] sm:max-w-none">
                                 {name || 'User Profile'}
                             </h1>
                             <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 px-2">
@@ -168,8 +168,8 @@ const ProfilePage = () => {
 
                     <div className="grid lg:grid-cols-3 gap-8 md:gap-10">
                         {/* Sidebar / Tabs */}
-                        <div className="lg:col-span-1 w-full relative">
-                            <div className="flex lg:flex-col gap-3 md:gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 scrollbar-hide -mx-5 px-5 md:mx-0 md:px-0 w-[100vw] sm:w-full max-w-[100vw]">
+                        <div className="lg:col-span-1 w-full relative z-[20]">
+                            <div className="flex lg:flex-col gap-2 md:gap-4 overflow-x-auto lg:overflow-visible pb-6 lg:pb-0 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 w-screen sm:w-full max-w-full">
                                 {[
                                     { id: 'personal', icon: <User size={16} className="md:size-[18px]" />, label: 'Profile' },
                                     { id: 'applications', icon: <FileText size={16} className="md:size-[18px]" />, label: 'Applications' },
@@ -180,7 +180,7 @@ const ProfilePage = () => {
                                     <button
                                         key={i}
                                         onClick={() => setActiveTab(item.id)}
-                                        className={`flex items-center gap-2 md:gap-3 px-5 md:px-6 py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-[10px] md:text-sm uppercase tracking-widest transition-all shrink-0 lg:w-full border ${activeTab === item.id ? 'bg-nepal-navy text-white shadow-xl shadow-nepal-navy/15 border-nepal-navy' : 'bg-white text-slate-400 hover:bg-slate-50 border-slate-100'}`}
+                                        className={`flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2.5 md:py-4 rounded-xl md:rounded-2xl font-black text-[9px] md:text-sm uppercase tracking-widest transition-all shrink-0 lg:w-full border ${activeTab === item.id ? 'bg-nepal-navy text-white shadow-xl shadow-nepal-navy/15 border-nepal-navy' : 'bg-white text-slate-400 hover:bg-slate-50 border-slate-100 shadow-sm'}`}
                                     >
                                         <span className={activeTab === item.id ? 'text-nepal-gold' : 'text-slate-300'}>{item.icon}</span>
                                         {item.label}
@@ -243,14 +243,14 @@ const ProfilePage = () => {
                                             </div>
                                         </div>
 
-                                        <div className="space-y-4 pt-4 border-t border-slate-50">
-                                            <div className="flex items-center gap-3 mb-3 md:mb-4">
-                                                <Fingerprint className="text-nepal-gold" size={20} />
-                                                <h3 className="text-sm md:text-base font-black text-nepal-navy tracking-tight uppercase">Security</h3>
+                                        <div className="space-y-4 pt-6 border-t border-slate-100">
+                                            <div className="flex items-center gap-3 mb-2 md:mb-4">
+                                                <Fingerprint className="text-nepal-gold md:size-5" size={18} />
+                                                <h3 className="text-[10px] md:text-base font-black text-nepal-navy tracking-tight uppercase">Security Status</h3>
                                             </div>
-                                            <p className="text-[10px] sm:text-xs md:text-base text-slate-500 font-medium leading-relaxed bg-slate-50 p-4 sm:p-5 md:p-8 rounded-[1.25rem] md:rounded-[2rem] border border-slate-100 italic break-words w-full">
-                                                Your account is {user?.authMethod === 'google' ? 'signed in with Google' : 'saved securely'}.
-                                                Your data is kept safe and private within the Pathfinder database.
+                                            <p className="text-[9px] sm:text-xs md:text-base text-slate-500 font-medium leading-relaxed bg-slate-50/50 p-4 sm:p-5 md:p-8 rounded-[1.25rem] md:rounded-[2rem] border border-slate-100 italic break-words w-full">
+                                                Your account is {user?.authMethod === 'google' ? 'linked with Google' : 'secured'}.
+                                                Data is encrypted in the Pathfinder database.
                                             </p>
                                         </div>
 

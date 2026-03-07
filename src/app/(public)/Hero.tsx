@@ -321,8 +321,8 @@ const Hero = () => {
                     </div>
                     {[
                         { label: 'Working Visa', pct: 82, color: 'bg-blue-500' },
+                        { label: 'Business Visa', pct: 74, color: 'bg-amber-500' },
                         { label: 'Study Visa', pct: 65, color: 'bg-purple-500' },
-                        { label: 'Residential Visa', pct: 48, color: 'bg-emerald-500' },
                     ].map((item, idx) => (
                         <div key={item.label} className="mb-3">
                             <div className="flex justify-between text-sm mb-1.5">

@@ -123,24 +123,19 @@ const visaTypes = [
         icon: FileText, accentBg: 'bg-blue-600', fee: 'USD 100 – 150 / month', days: '10–15 business days', load: 'Standard', color: 'text-blue-500'
     },
     {
+        title: 'Business Visa', subtitle: 'Trade & Investment',
+        desc: 'For foreigners entering Nepal to conduct business, trade, or investment activities. Requires appropriate recommendation letters.',
+        icon: Globe, accentBg: 'bg-amber-600', fee: 'USD 30 – 300 / duration', days: '3–7 business days', load: 'Optimized', color: 'text-amber-500'
+    },
+    {
         title: 'Study Visa', subtitle: 'Academic & Research',
         desc: 'For international students admitted to UGC-recognised universities and colleges in Nepal. Can be renewed annually for the duration of the course.',
         icon: BookOpen, accentBg: 'bg-violet-600', fee: 'USD 30 – 75 / month', days: '7–10 business days', load: 'Light', color: 'text-emerald-500'
     },
     {
-        title: 'Residential Visa', subtitle: 'Long-term Residence',
-        desc: 'Granted to foreign investors, retired individuals, and those with genuine long-term ties to Nepal. Minimum investment threshold may apply.',
-        icon: HomeIcon, accentBg: 'bg-emerald-600', fee: 'USD 500 – 1,000 / year', days: '20–30 business days', load: 'Heavy', color: 'text-rose-500'
-    },
-    {
         title: 'Tourist Visa', subtitle: 'Travel & Tourism',
         desc: 'For foreign nationals visiting Nepal for leisure, trekking, mountaineering, pilgrimage, or family visits. Extendable up to 150 days per calendar year.',
         icon: Newspaper, accentBg: 'bg-rose-600', fee: 'USD 30 – 100 (on arrival)', days: '1–5 business days', load: 'Optimized', color: 'text-blue-500'
-    },
-    {
-        title: 'Business Visa', subtitle: 'Trade & Investment',
-        desc: 'For foreigners entering Nepal to conduct business, trade, or investment activities. Requires appropriate recommendation letters.',
-        icon: Globe, accentBg: 'bg-amber-600', fee: 'USD 30 – 300 / duration', days: '3–7 business days', load: 'Optimized', color: 'text-amber-500'
     },
 ];
 
@@ -206,7 +201,7 @@ const VisaTypes = () => (
                 </motion.p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {visaTypes.map((type, i) => (
                     <motion.div
                         key={i}

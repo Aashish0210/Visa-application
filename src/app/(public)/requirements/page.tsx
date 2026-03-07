@@ -20,9 +20,9 @@ const RequirementsPage = () => {
 
     const categories = [
         { id: 'general', label: 'All Applicants', icon: FileText, subtitle: "Basic Info" },
+        { id: 'business', label: 'Business Visa', icon: Building2, subtitle: "Trade Info" },
         { id: 'working', label: 'Working Visa', icon: Briefcase, subtitle: "Job Info" },
         { id: 'study', label: 'Study Visa', icon: GraduationCap, subtitle: "Student Info" },
-        { id: 'residential', label: 'Residential Visa', icon: Building2, subtitle: "Resident Info" },
     ];
 
     const requirements = {
@@ -32,6 +32,13 @@ const RequirementsPage = () => {
             "A recently taken professional digital passport photo (White background).",
             "Completed digital application profile through this official portal.",
             "Valid proof of international health insurance coverage."
+        ],
+        business: [
+            "Official Recommendation Letter from the relevant Ministry or Government Agency.",
+            "Evidence of Investment or Business Partnership in Nepal.",
+            "Authorized Letter from the Nepalese business partner or company.",
+            "Company registration and tax clearance of the Nepalese host.",
+            "Recent bank statements showing financial standing for business activities."
         ],
         working: [
             "Official Appointment Letter from the registered employer in Nepal.",
@@ -46,13 +53,6 @@ const RequirementsPage = () => {
             "Proof of money in bank (Last 6 months verified statements).",
             "Academic transcripts from previous institutions.",
             "No Objection Certificate (NOC) from your home country's embassy."
-        ],
-        residential: [
-            "Verified evidence of investment in Nepal (Min. $100,000 USD equivalent).",
-            "Retiree status only: Verified annual income/pension of $20,000+ USD.",
-            "Police Report (Last 6 months).",
-            "Official health clearance issued by a certified Nepalese facility.",
-            "Property documents or authorized long-term lease agreement."
         ],
     };
 

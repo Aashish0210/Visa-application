@@ -141,7 +141,7 @@ const Footer = () => {
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <span className="text-sm font-black uppercase tracking-widest text-slate-500">Address</span>
-                                    <span className="text-white font-bold leading-tight">Kalikasthan, Kathmandu, Nepal</span>
+                                    <span className="text-white font-bold leading-tight">Kupandol, Lalitpur, Nepal</span>
                                 </div>
                             </li>
                             <li className="flex items-center gap-4">

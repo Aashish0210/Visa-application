@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { MessageSquare, X, Send, User, Bot, Loader2, Sparkles, ArrowRight } from 'lucide-react';
+import { MessageSquare, X, Send, User, Bot, Loader2, Sparkles, ArrowRight, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ChatMessage {
@@ -22,22 +22,29 @@ const Chatbot = () => {
     const [isTyping, setIsTyping] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
     const chatRef = useRef<HTMLDivElement>(null);
+    const [userContext, setUserContext] = useState<any>(null);
+
+    // Official Site Knowledge Base for AI
+    const KNOWLEDGE_BASE = {
+        location: "Kupandol, Lalitpur, Nepal",
+        contact: "+977-1-4429660 | support@immigration.gov.np",
+        visa_types: ["Working", "Business", "Study", "Tourist"],
+        fees: {
+            "Working": "$300 (1 Year)",
+            "Business": "$250 (1 Year)",
+            "Study": "$150 (1 Semester)",
+            "Tourist": "$30 (15 Days), $50 (30 Days), $125 (90 Days)"
+        },
+        requirements: "Passport (6m validity), Photos, Fee Receipt, and specific documents (Job Letter, Enrollment, or Bank Statements).",
+        office_hours: "Sunday to Friday, 10:00 AM - 5:00 PM"
+    };
 
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (chatRef.current && !chatRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
+        const session = localStorage.getItem('pf_user_session');
+        if (session) {
+            setUserContext(JSON.parse(session));
         }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [isOpen]);
+    }, []);
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -53,29 +60,91 @@ const Chatbot = () => {
         setInputValue('');
         setIsTyping(true);
 
-        // Simulate AI response based on the knowledge base architecture
-        // In a real app, this would be an API call to a backend AI service
+        // Highly Responsive AI Logic Simulation
         setTimeout(() => {
-            let responseText = "I'm searching our official database for that information... ";
+            let responseText = "";
             let actionLink = null;
+            const q = inputValue.toLowerCase().trim();
 
-            const query = inputValue.toLowerCase();
-            if (query.includes('document') || query.includes('require')) {
-                responseText = "For a long-term visa, you generally need: 1. Passport with 6 months validity, 2. Recent passport photo, 3. Proof of accommodation, 4. Financial sustenance evidence (bank statements), and 5. Specific documents related to your visa type (Job offer for Work, Enrollment for Study).";
-                actionLink = { label: "View Requirement Checklist", href: "/requirements" };
-            } else if (query.includes('time') || query.includes('long')) {
-                responseText = "Processing times for long-term visas typically range from 7 to 15 business days depending on the visa category and completeness of documents.";
-                actionLink = { label: "Learn More About Visas", href: "/info" };
-            } else if (query.includes('status') || query.includes('check') || query.includes('track')) {
-                responseText = "You can check your status by clicking on 'Track Application' in the main menu and entering your Reference Number and Passport Number.";
-                actionLink = { label: "Track My Application", href: "/track" };
-            } else if (query.includes('appoint') || query.includes('book') || query.includes('visit')) {
-                responseText = "Biometric appointments can be scheduled online after your application is processed. You can also view available slots here.";
-                actionLink = { label: "Manage Appointments", href: "/appointments" };
-            } else if (query.includes('hello') || query.includes('hi') || query.includes('namaste')) {
-                responseText = "Namaste! I am here to assist you with the Nepal Long-Term Visa process. You can ask me about visa types, requirements, or how to track your application.";
-            } else {
-                responseText = "I'm here to help with visa requirements, application steps, and general queries about Nepal Long-Term Visas. Would you like to see the list of document requirements or check your eligibility?";
+            // 1. Basic Greetings
+            if (q === 'hi' || q === 'hello' || q === 'namaste' || q === 'hey') {
+                responseText = userContext
+                    ? `Namaste, **${userContext.name}**! Welcome back. How can I assist you with your visa today?`
+                    : "Namaste! I am your Nepal Visa Assistant. How can I help you today?";
+            }
+            // 2. Visa Categories & General Lists
+            else if (q.includes('visa') && (q.includes('type') || q.includes('different') || q.includes('list') || q.includes('what') || q.includes('available') || q.includes('info'))) {
+                responseText = "Nepal offers several visa categories for international visitors through this portal: \n\n• **Tourist Visa**: For leisure and short visits ($30+)\n• **Working Visa**: For official employment ($300)\n• **Business Visa**: For investors and traders ($250)\n• **Study Visa**: For students in recognized institutions ($150)\n\nWhich one would you like to explore in detail?";
+                actionLink = { label: "Compare All Visas", href: "/info" };
+            }
+            // 3. Specific Visa Details
+            else if (q.includes('tourist')) {
+                responseText = "The **Tourist Visa** is the most common. It costs **$30** (15 days), **$50** (30 days), or **$125** (90 days). It's a multiple-entry visa. You can apply on arrival or here to skip the line.";
+                actionLink = { label: "Tourist Requirements", href: "/requirements" };
+            }
+            else if (q.includes('business')) {
+                responseText = `The **Business Visa** is designed for investors. It costs **${KNOWLEDGE_BASE.fees.Business}** for 1 year. Key documents: Investment certificate from the Dept. of Industries and business registration.`;
+                actionLink = { label: "Business Checklist", href: "/requirements" };
+            }
+            else if (q.includes('work') || q.includes('working')) {
+                responseText = `The **Working Visa** costs **${KNOWLEDGE_BASE.fees.Working}** for a year. You MUST have an appointment letter and a labor permit. We handle the document verification as the first step.`;
+                actionLink = { label: "Apply for Work Visa", href: "/apply" };
+            }
+            else if (q.includes('study') || q.includes('student') || q.includes('education')) {
+                responseText = `The **Study Visa** is **${KNOWLEDGE_BASE.fees.Study}** per semester. You'll need an admission letter from a Nepali University and proof of financial support.`;
+                actionLink = { label: "Study Requirements", href: "/requirements" };
+            }
+            // 4. Documents & Requirements
+            else if (q.includes('document') || q.includes('paper') || q.includes('need') || q.includes('require')) {
+                responseText = "Basic requirements for ALL visas: \n1. Original Passport (valid for 6 months)\n2. Digital Photo (white background)\n3. Previous Visa copy (if applicable)\n4. Specific Letters (Job/Business/Admission).";
+                actionLink = { label: "Detailed Document Guide", href: "/requirements" };
+            }
+            // 5. Processing Time & Validity
+            else if (q.includes('time') || q.includes('long') || q.includes('duration') || q.includes('fast')) {
+                responseText = "Standard processing is **7-15 business days**. Once approved, your visa validity starts from the date of entry into Nepal. You can track your real-time progress in the 'Track' section.";
+                actionLink = { label: "Track My Progress", href: "/track" };
+            }
+            // 6. Location & Contact
+            else if (q.includes('location') || q.includes('address') || q.includes('where') || q.includes('office') || q.includes('kupandol')) {
+                responseText = `Our official headquarters is located in **${KNOWLEDGE_BASE.location}**. Visit us Sunday through Friday, between 10:00 AM and 5:00 PM for biometrics or inquiries.`;
+                actionLink = { label: "See Map Location", href: "/info#location" };
+            }
+            else if (q.includes('phone') || q.includes('email') || q.includes('contact') || q.includes('call') || q.includes('support')) {
+                responseText = `For urgent support, call us at **+977-1-4429660** or email **support@immigration.gov.np**. Our technical team responds within 24 hours.`;
+            }
+            // 7. Procedures & Fees
+            else if (q.includes('fee') || q.includes('cost') || q.includes('price') || q.includes('money') || q.includes('pay') || q.includes('dollar')) {
+                responseText = "Official Fees: Working ($300), Business ($250), Study ($150), Tourist ($30-$125). Payments are accepted via Credit Card or Bank Transfer after your documents are initially reviewed.";
+                actionLink = { label: "Payment Portal", href: "/track" };
+            }
+            else if (q.includes('how') && (q.includes('apply') || q.includes('start') || q.includes('begin'))) {
+                responseText = "To begin: \n1. Click **Apply** in the menu\n2. Fill in your passport details\n3. Upload required documents\n4. Submit and wait for the 'Verified' status to appear in your profile.";
+                actionLink = { label: "Begin Application", href: "/apply" };
+            }
+            else if (q.includes('status') || q.includes('track') || q.includes('check') || q.includes('update')) {
+                responseText = "Enter your Reference ID (e.g., NV-123456) and Passport Number in our tracking tool to see your current status (Submitted, Under Review, or Approved).";
+                actionLink = { label: "Track Application", href: "/track" };
+            }
+            // 8. User Specific Context
+            else if (q.includes('my') && (q.includes('detail') || q.includes('application') || q.includes('visa') || q.includes('info'))) {
+                if (userContext) {
+                    responseText = `**${userContext.name}**, you are currently logged in. You can check the 'Verified' documents, system feedback, and payment buttons directly in your personalized dashboard.`;
+                    actionLink = { label: "Go to My Apps", href: "/my-applications" };
+                } else {
+                    responseText = "Please **Log In** to view your specific application data, download receipts, or see admin feedback on your documents.";
+                    actionLink = { label: "Log In to Account", href: "/login" };
+                }
+            }
+            // 9. Polite Fallbacks / Basic Nepali phrases
+            else if (q.includes('thank') || q.includes('dhanyabad')) {
+                responseText = "You're very welcome! I'm glad I could help. Is there anything else you need for your journey to Nepal?";
+            }
+            else if (q.includes('bye') || q.includes('tata')) {
+                responseText = "Goodbye! We hope to see you in Nepal soon. Feel free to return if you have more questions.";
+            }
+            // Absolute Fallback
+            else {
+                responseText = "I'm sorry, I'm still learning that specific topic. I can provide detailed info on: \n\n• **Visa Types & Fees** (Tourist, Work, etc.)\n• **Document Requirements**\n• **Application Tracking**\n• **Our Kupandol Office**\n\nTry asking 'What are the different visas?' or 'How do I track my status?'";
             }
 
             const botMsg: ChatMessage = {
@@ -87,21 +156,21 @@ const Chatbot = () => {
             };
             setMessages(prev => [...prev, botMsg]);
             setIsTyping(false);
-        }, 1500);
+        }, 1000);
     };
 
     return (
-        <div className="fixed bottom-28 lg:bottom-6 right-4 md:right-6 z-[100]" ref={chatRef}>
+        <div className="fixed bottom-32 lg:bottom-8 right-4 md:right-8 z-[100]" ref={chatRef}>
             {/* Launcher */}
             <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-12 h-12 md:w-14 md:h-14 bg-nepal-blue rounded-full flex items-center justify-center shadow-2xl border-2 md:border-4 border-white text-white relative"
+                className="w-14 h-14 md:w-16 md:h-16 bg-nepal-blue rounded-3xl flex items-center justify-center shadow-2xl border-4 border-white text-white relative group"
             >
-                {isOpen ? <X size={20} className="md:size-6" /> : <MessageSquare size={20} className="md:size-6" />}
+                {isOpen ? <X size={24} /> : <div className="relative"><MessageSquare size={28} /><Sparkles className="absolute -top-2 -right-2 text-nepal-gold size-4 animate-pulse" /></div>}
                 {!isOpen && (
-                    <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-nepal-gold rounded-full border-2 border-white animate-pulse"></span>
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white ring-4 ring-emerald-500/10 transition-all"></span>
                 )}
             </motion.button>
 
@@ -109,26 +178,27 @@ const Chatbot = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: 20, x: 10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: 20, x: 10 }}
-                        className="absolute bottom-16 md:bottom-20 right-0 w-[calc(100vw-32px)] md:w-[380px] h-[75vh] md:h-[550px] bg-white dark:bg-slate-900 rounded-3xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden"
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                        className="absolute bottom-full right-0 mb-6 w-[calc(100vw-32px)] md:w-[400px] h-[60vh] md:h-[550px] max-h-[600px] min-h-[350px] bg-white rounded-[2.5rem] shadow-[0_40px_80px_-20px_rgba(15,23,42,0.25)] border border-slate-100 flex flex-col overflow-hidden origin-bottom-right"
                     >
-                        <div className="bg-nepal-blue p-5 text-white flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                                <div className="w-10 h-10 bg-white/10 rounded flex items-center justify-center border border-white/20">
-                                    <Bot size={22} />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-sm">Nepal Visa Helper</h3>
-                                    <div className="flex items-center space-x-1.5">
-                                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                                        <span className="text-xs text-white/80">Online | Available</span>
+                        <div className="bg-nepal-blue p-6 md:p-8 text-white relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-8 opacity-10 rotate-12"><Shield size={120} /></div>
+                            <div className="flex items-center justify-between relative z-10">
+                                <div className="flex items-center space-x-4">
+                                    <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-md">
+                                        <Bot size={26} className="text-nepal-gold" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-black text-lg tracking-tight">Visa Intelligence</h3>
+                                        <div className="flex items-center space-x-2">
+                                            <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-white/60">Live Assistant</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <button onClick={() => setIsOpen(false)} className="hover:bg-white/10 p-1 rounded transition-colors">
+                                <button onClick={() => setIsOpen(false)} className="bg-white/10 hover:bg-white/20 p-2 rounded-xl transition-all">
                                     <X size={20} />
                                 </button>
                             </div>
@@ -142,15 +212,17 @@ const Chatbot = () => {
                                         <div className={`w-8 h-8 rounded flex items-center justify-center shrink-0 ${msg.sender === 'bot' ? 'bg-nepal-blue text-white' : 'bg-slate-200 text-slate-600'}`}>
                                             {msg.sender === 'bot' ? <Bot size={16} /> : <User size={16} />}
                                         </div>
-                                        <div className={`p-3 rounded text-sm shadow-sm ${msg.sender === 'user'
-                                            ? 'bg-slate-800 text-white rounded-tr-none'
-                                            : 'bg-white text-slate-800 rounded-tl-none border border-slate-200'
+                                        <div className={`p-4 rounded-3xl text-sm shadow-sm leading-relaxed ${msg.sender === 'user'
+                                            ? 'bg-slate-900 text-white rounded-tr-none'
+                                            : 'bg-white text-slate-800 rounded-tl-none border border-slate-100 font-medium'
                                             }`}>
-                                            <p>{msg.text}</p>
+                                            {msg.text.split('**').map((part, i) => (
+                                                i % 2 === 1 ? <strong key={i} className="text-nepal-blue">{part}</strong> : part
+                                            ))}
                                             {msg.link && (
                                                 <Link
                                                     href={msg.link.href}
-                                                    className="mt-3 block p-2 bg-slate-50 dark:bg-slate-700/50 rounded-lg text-nepal-blue font-bold text-xs flex items-center justify-between hover:bg-slate-100 transition-colors"
+                                                    className="mt-4 block p-3 bg-slate-50 rounded-2xl text-nepal-blue font-black text-[10px] uppercase tracking-widest flex items-center justify-between hover:bg-nepal-gold hover:text-nepal-navy transition-all border border-slate-100"
                                                 >
                                                     <span>{msg.link.label}</span>
                                                     <ArrowRight size={14} />
@@ -162,11 +234,11 @@ const Chatbot = () => {
                             ))}
                             {isTyping && (
                                 <div className="flex justify-start">
-                                    <div className="flex items-end space-x-2 max-w-[85%]">
-                                        <div className="w-8 h-8 rounded bg-nepal-blue text-white flex items-center justify-center shrink-0">
-                                            <Bot size={16} />
+                                    <div className="flex items-end space-x-3 max-w-[85%]">
+                                        <div className="w-9 h-9 rounded-xl bg-nepal-blue text-white flex items-center justify-center shrink-0">
+                                            <Bot size={18} className="text-nepal-gold" />
                                         </div>
-                                        <div className="p-3 bg-white rounded rounded-tl-none border border-slate-200 shadow-sm">
+                                        <div className="p-4 bg-white rounded-3xl rounded-tl-none border border-slate-100 shadow-sm">
                                             <Loader2 className="w-4 h-4 animate-spin text-nepal-blue" />
                                         </div>
                                     </div>
@@ -175,26 +247,28 @@ const Chatbot = () => {
                         </div>
 
                         {/* Input Area */}
-                        <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
-                            <div className="relative flex items-center">
+                        <div className="p-6 bg-white border-t border-slate-50">
+                            <div className="relative flex items-center group/input">
+                                <div className="absolute -inset-[1px] bg-gradient-to-r from-nepal-gold/50 to-transparent rounded-2xl opacity-0 group-focus-within/input:opacity-100 transition-opacity blur-[2px]" />
                                 <input
                                     type="text"
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                                    placeholder="Type your message..."
-                                    className="w-full pl-4 pr-12 py-3 bg-slate-50 border border-slate-200 rounded text-sm focus:ring-1 focus:ring-nepal-blue focus:border-nepal-blue transition-all outline-none"
+                                    placeholder="Ask anything about Nepal Visas..."
+                                    className="relative w-full pl-6 pr-14 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-nepal-navy placeholder:text-slate-400 placeholder:font-black placeholder:uppercase placeholder:tracking-widest outline-none focus:bg-white focus:border-nepal-gold transition-all"
                                 />
                                 <button
                                     onClick={handleSend}
                                     disabled={!inputValue.trim()}
-                                    className="absolute right-2 p-2 text-nepal-blue disabled:text-slate-400 hover:bg-slate-100 rounded transition-all"
+                                    className="absolute right-2 p-3 text-nepal-navy bg-nepal-gold rounded-xl hover:bg-yellow-400 disabled:bg-slate-100 disabled:text-slate-300 transition-all shadow-lg shadow-nepal-gold/10"
                                 >
                                     <Send size={18} />
                                 </button>
                             </div>
-                            <div className="mt-3 flex justify-center">
-                                <p className="text-xs text-slate-400">Visa Support • Secure Channel</p>
+                            <div className="mt-4 flex justify-center items-center gap-2">
+                                <Sparkles size={12} className="text-nepal-gold" />
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">Official Visa Support • AI Powered</p>
                             </div>
                         </div>
                     </motion.div>

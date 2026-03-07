@@ -135,11 +135,11 @@ const MyApplicationsPage = () => {
                                 <div className="w-10 h-[2.5px] bg-nepal-gold" />
                                 <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.6em] text-nepal-gold">Profile Archive</span>
                             </div>
-                            <h1 className="text-4xl lg:text-5xl font-black text-nepal-navy tracking-tighter uppercase leading-[0.9]">
+                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-nepal-navy tracking-tighter uppercase leading-[0.9]">
                                 My <span className="text-nepal-gold italic">Applications</span>
                             </h1>
-                            <p className="mt-6 text-slate-400 font-bold text-[10px] lg:text-[11px] uppercase tracking-[0.3em] flex items-center gap-3">
-                                <span className="w-6 h-6 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center">
+                            <p className="mt-4 md:mt-6 text-slate-400 font-bold text-[9px] lg:text-[11px] uppercase tracking-[0.3em] flex items-center gap-3">
+                                <span className="w-6 h-6 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center shrink-0">
                                     <LayoutDashboard size={12} className="text-nepal-gold" strokeWidth={3} />
                                 </span>
                                 Centralized Application Registry
@@ -150,24 +150,24 @@ const MyApplicationsPage = () => {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2, duration: 0.8 }}
-                            className="flex items-center gap-6 bg-white/40 backdrop-blur-xl p-2.5 rounded-[2rem] border border-white/80 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.04)]"
+                            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 bg-white/40 backdrop-blur-xl p-2 lg:p-2.5 rounded-[2rem] border border-white/80 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.04)] w-full md:w-auto"
                         >
-                            <div className="flex items-center gap-8 px-8 py-4">
+                            <div className="flex items-center justify-around sm:justify-start gap-4 sm:gap-8 px-4 sm:px-8 py-3 sm:py-4">
                                 <div className="text-center">
-                                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mb-1.5">Total Applications</p>
-                                    <p className="text-3xl font-black text-nepal-navy leading-none tabular-nums">{applications.length}</p>
+                                    <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-1">Total Apps</p>
+                                    <p className="text-2xl sm:text-3xl font-black text-nepal-navy leading-none tabular-nums">{applications.length}</p>
                                 </div>
-                                <div className="w-[1px] h-8 bg-slate-100" />
+                                <div className="w-[1px] h-6 bg-slate-100" />
                                 <div className="text-center">
-                                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mb-1.5">Verified</p>
-                                    <p className="text-3xl font-black text-emerald-500 leading-none tabular-nums">{applications.filter(a => a.status === 'Approved').length}</p>
+                                    <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-1">Verified</p>
+                                    <p className="text-2xl sm:text-3xl font-black text-emerald-500 leading-none tabular-nums">{applications.filter(a => a.status === 'Approved').length}</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setIsLinking(true)}
-                                className="bg-nepal-navy text-white px-8 py-4 rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] hover:bg-nepal-gold hover:text-nepal-navy transition-all flex items-center gap-3 shadow-xl shadow-nepal-navy/10 group"
+                                className="bg-nepal-navy text-white px-6 sm:px-8 py-4 rounded-[1.5rem] font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] hover:bg-nepal-gold hover:text-nepal-navy transition-all flex items-center justify-center gap-3 shadow-xl shadow-nepal-navy/10 group w-full sm:w-auto"
                             >
-                                <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-700" />
+                                <RefreshCw size={14} className="sm:size-4 group-hover:rotate-180 transition-transform duration-700" />
                                 Sync Record
                             </button>
                         </motion.div>

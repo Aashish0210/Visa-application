@@ -249,7 +249,7 @@ const TrackPage = () => {
                             className="mb-12 space-y-6"
                         >
                             <div className="flex items-center justify-between">
-                                <h2 className="text-xs font-black uppercase tracking-[0.4em] text-nepal-navy/40">
+                                <h2 className="text-[10px] md:text-xs font-black uppercase tracking-[0.1em] md:tracking-[0.4em] text-nepal-navy/40">
                                     {userApps.length > 0 ? 'Linked Applications Found' : 'No Applications Linked'}
                                 </h2>
                                 {userApps.length > 0 && (
@@ -270,23 +270,23 @@ const TrackPage = () => {
                                                 setResult(app);
                                                 window.scrollTo({ top: 400, behavior: 'smooth' });
                                             }}
-                                            className="w-full flex items-center justify-between p-4 lg:p-6 bg-white border border-slate-100 rounded-2xl lg:rounded-3xl hover:border-nepal-gold/50 hover:shadow-xl hover:shadow-nepal-gold/5 transition-all text-left group"
+                                            className="w-full flex items-center justify-between p-3 md:p-6 bg-white border border-slate-100 rounded-2xl lg:rounded-3xl hover:border-nepal-gold/50 hover:shadow-xl hover:shadow-nepal-gold/5 transition-all text-left group"
                                         >
-                                            <div className="flex items-center gap-6">
-                                                <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-nepal-gold group-hover:bg-nepal-gold group-hover:text-white transition-colors">
-                                                    <FileText size={20} />
+                                            <div className="flex items-center gap-3 md:gap-6">
+                                                <div className="w-10 h-10 md:w-12 md:h-12 bg-slate-50 rounded-xl md:rounded-2xl flex items-center justify-center text-nepal-gold group-hover:bg-nepal-gold group-hover:text-white transition-colors">
+                                                    <FileText size={18} className="md:size-5" />
                                                 </div>
-                                                <div>
-                                                    <p className="text-sm font-black text-nepal-navy tracking-tight">{app.refId}</p>
-                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{app.visaLabel}</p>
+                                                <div className="min-w-0">
+                                                    <p className="text-xs md:text-sm font-black text-nepal-navy tracking-tight truncate">{app.refId}</p>
+                                                    <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">{app.visaLabel}</p>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-4">
-                                                <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${app.status === 'Approved' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>
+                                            <div className="flex items-center gap-2 md:gap-4 shrink-0">
+                                                <span className={`text-[8px] md:text-[10px] font-black uppercase tracking-widest px-2 py-1 md:px-3 md:py-1 rounded-full ${app.status === 'Approved' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>
                                                     {app.status}
                                                 </span>
-                                                <div className="p-2 bg-slate-50 rounded-xl text-slate-300 group-hover:text-nepal-gold transition-colors">
-                                                    <ChevronRight size={16} />
+                                                <div className="p-1.5 md:p-2 bg-slate-50 rounded-lg md:rounded-xl text-slate-300 group-hover:text-nepal-gold transition-colors">
+                                                    <ChevronRight size={14} className="md:size-4" />
                                                 </div>
                                             </div>
                                         </button>
@@ -339,7 +339,7 @@ const TrackPage = () => {
                                                 value={refNumber}
                                                 onChange={(e) => setRefNumber(e.target.value)}
                                                 placeholder="ID NUMBER"
-                                                className="w-full bg-transparent px-4 md:px-6 py-4 md:py-6 text-nepal-navy font-black tracking-widest placeholder:text-slate-400 placeholder:font-black outline-none text-base md:text-xl"
+                                                className="w-full bg-transparent px-6 md:px-8 py-4 md:py-6 text-nepal-navy font-black tracking-widest placeholder:text-slate-400 placeholder:font-black outline-none text-base md:text-xl"
                                             />
                                         </div>
                                     </div>
@@ -362,7 +362,7 @@ const TrackPage = () => {
                                                 value={passport}
                                                 onChange={(e) => setPassport(e.target.value)}
                                                 placeholder="YOUR PASSPORT"
-                                                className="w-full bg-transparent px-4 md:px-6 py-4 md:py-6 text-nepal-navy font-black tracking-widest placeholder:text-slate-400 placeholder:font-black outline-none text-base md:text-xl"
+                                                className="w-full bg-transparent px-6 md:px-8 py-4 md:py-6 text-nepal-navy font-black tracking-widest placeholder:text-slate-400 placeholder:font-black outline-none text-base md:text-xl"
                                             />
                                         </div>
                                     </div>
@@ -372,7 +372,7 @@ const TrackPage = () => {
                             <button
                                 type="submit"
                                 disabled={isSearching}
-                                className="group relative w-full h-[65px] md:h-[80px] rounded-2xl md:rounded-[2rem] overflow-hidden transition-all duration-500 active:scale-[0.98] disabled:opacity-50 mt-8"
+                                className="group relative w-full h-[55px] md:h-[80px] rounded-2xl md:rounded-[2rem] overflow-hidden transition-all duration-500 active:scale-[0.98] disabled:opacity-50 mt-8"
                             >
                                 {/* Static Base Background */}
                                 <div className="absolute inset-0 bg-[#0F172A]" />

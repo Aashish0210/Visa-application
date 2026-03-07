@@ -20,7 +20,7 @@ const FlightPathSVG = ({ viewBox = '0 0 1440 520', paths }: any) => (
 );
 
 const VISA_FEES: Record<string, string> = {
-    Working: '$140.00', Study: '$60.00', Residential: '$750.00', Tourist: '$30.00', Business: '$180.00',
+    Working: '$140.00', Business: '$180.00', Study: '$60.00', Tourist: '$30.00',
 };
 const DURATIONS: Record<string, string> = {
     '6_months': 'Interim (6 Months)', '1_year': 'Standard (1 Year)', '5_years': 'Residential (5 Years)',
@@ -319,7 +319,7 @@ const ApplyPage = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                     transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                                    className="space-y-12"
+                                    className="space-y-8 md:space-y-12"
                                 >
                                     {/* Step 1: Identity */}
                                     {step === 1 && (
@@ -363,7 +363,7 @@ const ApplyPage = () => {
                                                             name="nationality"
                                                             value={formData.nationality}
                                                             onChange={handleChange}
-                                                            className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black outline-none appearance-none cursor-pointer"
+                                                            className="w-full bg-transparent px-6 md:px-8 py-4 md:py-6 text-nepal-navy font-black outline-none appearance-none cursor-pointer text-sm md:text-base"
                                                         >
                                                             {['United States', 'United Kingdom', 'China', 'India', 'Germany', 'France', 'Japan', 'Canada', 'Australia', 'Other'].map(c => <option key={c}>{c}</option>)}
                                                         </select>
@@ -384,13 +384,12 @@ const ApplyPage = () => {
                                                     <Layers className="text-nepal-gold" size={14} strokeWidth={2.5} />
                                                     <label className="text-sm font-black text-nepal-navy uppercase tracking-[0.2em] opacity-60">Visa Type</label>
                                                 </div>
-                                                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                                     {[
                                                         { name: 'Working', icon: Briefcase },
-                                                        { name: 'Study', icon: GraduationCap },
-                                                        { name: 'Residential', icon: Home },
-                                                        { name: 'Tourist', icon: Plane },
                                                         { name: 'Business', icon: Building2 },
+                                                        { name: 'Study', icon: GraduationCap },
+                                                        { name: 'Tourist', icon: Plane },
                                                     ].map((v) => (
                                                         <button
                                                             key={v.name}
@@ -421,7 +420,7 @@ const ApplyPage = () => {
                                                             name="duration"
                                                             value={formData.duration}
                                                             onChange={handleChange}
-                                                            className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black outline-none appearance-none cursor-pointer"
+                                                            className="w-full bg-transparent px-6 md:px-8 py-4 md:py-6 text-nepal-navy font-black outline-none appearance-none cursor-pointer text-sm md:text-base"
                                                         >
                                                             {Object.entries(DURATIONS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                                                         </select>
@@ -445,7 +444,7 @@ const ApplyPage = () => {
                                                             onChange={handleChange}
                                                             rows={4}
                                                             placeholder="FULL ADDRESS OR HOTEL NAME..."
-                                                            className="w-full bg-transparent px-8 py-6 text-nepal-navy font-black placeholder:text-slate-400 placeholder:font-black outline-none resize-none text-lg"
+                                                            className="w-full bg-transparent px-6 md:px-8 py-4 md:py-6 text-nepal-navy font-black placeholder:text-slate-400 placeholder:font-black outline-none resize-none text-sm md:text-lg"
                                                         />
                                                     </div>
                                                 </div>
@@ -572,7 +571,7 @@ const ApplyPage = () => {
                             </AnimatePresence>
 
                             {/* Navigation controls */}
-                            <div className="flex justify-between mt-20 pt-12 border-t border-slate-100">
+                            <div className="flex justify-between mt-10 md:mt-20 pt-8 md:pt-12 border-t border-slate-100">
                                 <button
                                     onClick={prevStep}
                                     disabled={step === 1}
@@ -584,7 +583,7 @@ const ApplyPage = () => {
                                 <button
                                     onClick={isUpdate && step === 3 ? handleUpdate : (step === 4 ? handleSubmit : nextStep)}
                                     disabled={submitting}
-                                    className={`group relative h-[80px] px-12 rounded-[2rem] overflow-hidden transition-all duration-500 active:scale-[0.98] disabled:opacity-50 shadow-2xl ${isUpdate && step === 3 ? 'shadow-emerald-500/20' : 'shadow-nepal-navy/10'}`}
+                                    className={`group relative h-[55px] md:h-[80px] px-8 md:px-12 rounded-xl md:rounded-[2rem] overflow-hidden transition-all duration-500 active:scale-[0.98] disabled:opacity-50 shadow-2xl ${isUpdate && step === 3 ? 'shadow-emerald-500/20' : 'shadow-nepal-navy/10'}`}
                                 >
                                     {/* Static Base Background */}
                                     <div className={`absolute inset-0 ${isUpdate && step === 3 ? 'bg-emerald-600' : 'bg-[#0F172A]'}`} />
@@ -595,7 +594,7 @@ const ApplyPage = () => {
                                     {/* Border Glow */}
                                     <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                    <span className="relative z-10 flex items-center justify-center gap-4 text-white font-black text-sm uppercase tracking-[0.4em]">
+                                    <span className="relative z-10 flex items-center justify-center gap-3 md:gap-4 text-white font-black text-xs md:text-sm uppercase tracking-widest md:tracking-[0.4em]">
                                         {isUpdate && step === 3 ? (
                                             submitting ? (
                                                 <><Loader2 className="animate-spin text-white" size={18} /> Updating...</>

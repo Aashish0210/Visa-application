@@ -9,7 +9,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     return (
         <>
             <Navbar />
-            <main className="min-h-screen">
+            <main className="min-h-screen pb-32 lg:pb-0">
                 {children}
             </main>
             <Footer />

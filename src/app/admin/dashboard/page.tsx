@@ -190,7 +190,7 @@ export default function AdminDashboard() {
 
         // Check persistent credentials first, then fallback to session, then default
         const creds = JSON.parse(localStorage.getItem('pf_admin_credentials') || '{}');
-        const storedPwd = creds.password || session.password || 'Nepal@Secure2026';
+        const storedPwd = creds.password || session.password || 'visa@2026';
 
         if (curPwd !== storedPwd) { setPwdError('Current password is incorrect.'); return; }
         if (newPwd.length < 8) { setPwdError('New password must be at least 8 characters.'); return; }
@@ -214,7 +214,19 @@ export default function AdminDashboard() {
     useEffect(() => {
         const raw = typeof window !== 'undefined' ? localStorage.getItem(SESSION_KEY) : null;
         if (!raw) { router.replace('/admin/login'); return; }
-        setSession(JSON.parse(raw));
+
+        const parsedSession = JSON.parse(raw);
+        const REQUIRED_EMAIL = 'visa2026@gmail.com';
+        const REQUIRED_PASS = 'visa@2026';
+
+        // Check if session belongs to the old credentials or is invalid
+        if (parsedSession.email !== REQUIRED_EMAIL || parsedSession.password !== REQUIRED_PASS) {
+            localStorage.removeItem(SESSION_KEY);
+            router.replace('/admin/login');
+            return;
+        }
+
+        setSession(parsedSession);
     }, [router]);
 
     const fetchApplications = useCallback(async () => {

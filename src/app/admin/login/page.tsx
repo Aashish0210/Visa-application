@@ -9,8 +9,8 @@ import {
 } from 'lucide-react';
 
 /* ── Demo credentials (swap with real auth later) ── */
-const ADMIN_EMAIL = 'admin@pathfinder.gov';
-const ADMIN_PASSWORD = 'Nepal@Secure2026';
+const ADMIN_EMAIL = 'visa2026@gmail.com';
+const ADMIN_PASSWORD = 'visa@2026';
 const SESSION_KEY = 'pf_admin_session';
 
 const ScanLine = () => (
@@ -73,24 +73,12 @@ export default function AdminLoginPage() {
 
         await new Promise(r => setTimeout(r, 1400)); // simulated latency
 
-        // Check for updated credentials in localStorage (from settings)
-        const savedProfile = localStorage.getItem('pf_admin_profile');
-        const savedCredentials = localStorage.getItem('pf_admin_credentials');
-
         // Finals fallbacks
         let validEmail = ADMIN_EMAIL;
         let validPass = ADMIN_PASSWORD;
 
-        if (savedCredentials) {
-            const c = JSON.parse(savedCredentials);
-            if (c.email) validEmail = c.email;
-            if (c.password) validPass = c.password;
-        } else if (savedProfile) {
-            const p = JSON.parse(savedProfile);
-            if (p.email) validEmail = p.email;
-        }
-
         if (email === validEmail && password === validPass) {
+            const savedProfile = localStorage.getItem('pf_admin_profile');
             localStorage.setItem(SESSION_KEY, JSON.stringify({
                 user: (savedProfile && JSON.parse(savedProfile).name) || 'Admin Officer',
                 email,

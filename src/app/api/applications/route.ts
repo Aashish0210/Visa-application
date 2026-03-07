@@ -67,10 +67,9 @@ export async function POST(req: NextRequest) {
 
         const visaLabels: Record<string, string> = {
             working: 'Working Visa',
-            study: 'Study Visa',
-            residential: 'Residential Visa',
-            tourist: 'Tourist Visa',
             business: 'Business Visa',
+            study: 'Study Visa',
+            tourist: 'Tourist Visa',
         };
 
         const newApp = {
